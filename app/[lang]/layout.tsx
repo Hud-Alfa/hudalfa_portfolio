@@ -56,7 +56,6 @@ export async function generateMetadata({
       locale: lang === 'tr' ? 'tr_TR' : 'en_US',
       type: 'website',
     },
-    icons: { icon: '/favicon.svg' },
   };
 }
 

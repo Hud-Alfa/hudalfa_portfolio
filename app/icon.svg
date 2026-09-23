@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="YHO">
+  <rect width="64" height="64" rx="14" fill="#040B15"/>
+  <text x="32" y="42" text-anchor="middle"
+        font-family="Archivo, Inter, Segoe UI, Helvetica, Arial, sans-serif"
+        font-size="27" font-weight="700" letter-spacing="-1.6"
+        fill="#DCEDF8">YH<tspan fill="#6FBBF2">O</tspan></text>
+</svg>
