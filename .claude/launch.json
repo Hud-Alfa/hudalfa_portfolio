@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "site",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "onizleme",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "5173", "--directory", "onizleme"],
+      "port": 5173
+    }
+  ]
+}

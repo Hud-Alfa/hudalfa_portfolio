@@ -1,0 +1,21 @@
+node_modules/
+.next/
+out/
+build/
+
+.env
+.env.local
+.env*.local
+
+next-env.d.ts
+*.tsbuildinfo
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+.vercel
+
+# yerel çalışma dosyaları — tasarım prototipi ve referans görseller
+onizleme/
+/*.jpg
