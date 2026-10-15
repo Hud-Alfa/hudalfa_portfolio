@@ -348,18 +348,19 @@ body.lock{overflow:hidden}
 .hs-view::-webkit-scrollbar{height:6px}
 .hs-view::-webkit-scrollbar-thumb{background:var(--edge2);border-radius:3px}
 .hs-track{display:grid;gap:12px;grid-auto-flow:column;grid-template-rows:repeat(2,minmax(0,1fr));grid-auto-columns:min(300px,78vw);will-change:transform;padding-bottom:4px}
-.hs-track .rcard{min-height:0;scroll-snap-align:start}
+.hs-track .rcard{min-height:0;scroll-snap-align:start;overflow:hidden}
+.hs-track .rcard p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .hs-bar{display:none}
 .hs.on .hs-pin{position:sticky;top:var(--hdr);height:calc(100vh - var(--hdr));display:flex;flex-direction:column;justify-content:center}
 .hs.on .hs-view{overflow:hidden;scroll-snap-type:none}
-.hs.on .hs-track{grid-auto-columns:300px;transition:transform .1s linear;padding-bottom:0}
+.hs.on .hs-track{grid-auto-columns:300px;grid-template-rows:repeat(2,186px);transition:transform .1s linear;padding-bottom:0}
 .hs.on .hs-bar{display:block;height:2px;background:var(--edge);border-radius:2px;margin-top:26px;overflow:hidden}
 .hs.on .hs-bar i{display:block;height:100%;background:var(--cyan);border-radius:2px;transition:width .1s linear}
 .hs.on .shead{margin-bottom:34px}
 
 /* --- Hero: dönen unvan satırı --- */
 .role{position:relative;height:1.6em;overflow:hidden}
-.role span{position:absolute;left:0;top:0;width:100%;transform:translateY(-115%);opacity:0;transition:transform .62s cubic-bezier(.22,.7,.3,1),opacity .4s ease}
+.role span{position:absolute;left:0;top:0;width:100%;transform:translateY(-115%);opacity:0;transition:transform .46s cubic-bezier(.22,.7,.3,1),opacity .3s ease}
 .role span.on{transform:none;opacity:1}
 .role span.off{transform:translateY(115%);opacity:0}
 .role--static{height:auto;overflow:visible}

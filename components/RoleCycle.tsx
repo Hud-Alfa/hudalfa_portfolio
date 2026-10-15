@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
-const HOLD = 3400;
-const SLIDE = 700;
+const HOLD = 2100;
+const SLIDE = 520;
 
 /**
  * Unvanlar sırayla aşağı doğru dönüyor: yeni satır üstten iniyor,
