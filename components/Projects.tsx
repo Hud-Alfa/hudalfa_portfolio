@@ -81,6 +81,71 @@ export default function Projects({ lang, repoCount }: { lang: Lang; repoCount: n
     [filter],
   );
 
+  // Arşiv iki satıra iniyor; bölüm ekrana sabitlenirken kartlar yana kayıyor.
+  // Kayma bitince sabitleme kalkıyor ve sayfa normal akışına dönüyor.
+  const COL = 300;
+  const GAP = 12;
+  const hsWrap = useRef<HTMLDivElement>(null);
+  const hsView = useRef<HTMLDivElement>(null);
+  const [shift, setShift] = useState(0);
+  const [maxShift, setMaxShift] = useState(0);
+  const [pinned, setPinned] = useState(false);
+
+  useEffect(() => {
+    const wide = window.matchMedia('(min-width: 901px)');
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const measure = () => {
+      const view = hsView.current;
+      if (!view) return;
+      // Sütun genişliği sabit olduğu için şerit genişliği ölçmeden hesaplanabiliyor.
+      const cols = Math.ceil(shown.length / 2);
+      const trackW = cols * COL + Math.max(0, cols - 1) * GAP;
+      const m = Math.max(0, trackW - view.clientWidth);
+      setMaxShift(m);
+      setPinned(wide.matches && !calm.matches && m > 0);
+      setShift((s) => Math.min(s, m));
+    };
+    measure();
+    // Eşik atlandığında resize olayı her zaman gelmiyor; sorguyu da dinliyoruz.
+    window.addEventListener('resize', measure);
+    wide.addEventListener('change', measure);
+    calm.addEventListener('change', measure);
+    return () => {
+      window.removeEventListener('resize', measure);
+      wide.removeEventListener('change', measure);
+      calm.removeEventListener('change', measure);
+    };
+  }, [shown.length]);
+
+  useEffect(() => {
+    if (!pinned) {
+      setShift(0);
+      return;
+    }
+    const hdr = parseInt(
+      getComputedStyle(document.documentElement).getPropertyValue('--hdr') || '66',
+      10,
+    );
+    const onScroll = () => {
+      const w = hsWrap.current;
+      if (!w) return;
+      const passed = hdr - w.getBoundingClientRect().top;
+      setShift(Math.max(0, Math.min(maxShift, passed)));
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [pinned, maxShift]);
+
+  // Filtre değişince şerit başa dönüyor; yoksa yarısında kalmış gibi görünüyor.
+  const pickFilter = (c: Filter) => {
+    setFilter(c);
+    const w = hsWrap.current;
+    if (!pinned || !w) return;
+    const top = w.getBoundingClientRect().top + window.scrollY;
+    if (window.scrollY > top) window.scrollTo({ top, behavior: 'auto' });
+  };
+
   const hub = (
     <a
       className="hex hex--hub"
@@ -144,28 +209,38 @@ export default function Projects({ lang, repoCount }: { lang: Lang; repoCount: n
       </section>
 
       <section className="wrap sect">
-        <div className="shead">
-          <div>
-            <span className="eyebrow">{t(ui.sections.archive, lang)}</span>
-            <h2 dangerouslySetInnerHTML={{ __html: t(ui.sections.archiveTitle, lang) }} />
-          </div>
-        </div>
+        <div
+          className={`hs${pinned ? ' on' : ''}`}
+          ref={hsWrap}
+          style={pinned ? { height: `calc(100vh - var(--hdr) + ${maxShift}px)` } : undefined}
+        >
+          <div className="hs-pin">
+            <div className="shead">
+              <div>
+                <span className="eyebrow">{t(ui.sections.archive, lang)}</span>
+                <h2 dangerouslySetInnerHTML={{ __html: t(ui.sections.archiveTitle, lang) }} />
+              </div>
+            </div>
 
-        <div className="tabs">
-          {(['all', ...CATS] as Filter[]).map((c) => (
-            <button
-              key={c}
-              type="button"
-              className={`tab${filter === c ? ' on' : ''}`}
-              aria-pressed={filter === c}
-              onClick={() => setFilter(c)}
-            >
-              {t(catLabels[c], lang)}
-            </button>
-          ))}
-        </div>
+            <div className="tabs">
+              {(['all', ...CATS] as Filter[]).map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  className={`tab${filter === c ? ' on' : ''}`}
+                  aria-pressed={filter === c}
+                  onClick={() => pickFilter(c)}
+                >
+                  {t(catLabels[c], lang)}
+                </button>
+              ))}
+            </div>
 
-        <div className="rgrid">
+            <div className="hs-view" ref={hsView}>
+              <div
+                className="rgrid hs-track"
+                style={pinned ? { transform: `translateX(${-shift}px)` } : undefined}
+              >
           {shown.map((p) => {
             const detail = hasDetail(p) && !p.github;
             const body = (
@@ -202,6 +277,13 @@ export default function Projects({ lang, repoCount }: { lang: Lang; repoCount: n
               </a>
             );
           })}
+              </div>
+            </div>
+
+            <div className="hs-bar" aria-hidden="true">
+              <i style={{ width: `${maxShift ? (shift / maxShift) * 100 : 0}%` }} />
+            </div>
+          </div>
         </div>
       </section>
 

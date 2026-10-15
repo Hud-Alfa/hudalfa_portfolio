@@ -3,6 +3,7 @@ import type { Lang } from '@/content/types';
 import { intro, site } from '@/content/site';
 import { t, ui } from '@/content/dictionary';
 import SpotifyBadge from './SpotifyBadge';
+import RoleCycle from './RoleCycle';
 
 export default function Hero({ lang }: { lang: Lang }) {
   const [first, ...rest] = site.name.split(' ');
@@ -19,7 +20,7 @@ export default function Hero({ lang }: { lang: Lang }) {
             <br />
             <b>{last}</b>
           </h1>
-          <div className="role">{t(intro.role, lang)}</div>
+          <RoleCycle roles={intro.roles[lang]} />
           <p className="lead">{t(intro.lead, lang)}</p>
           <div className="cta">
             <a className="btn" href="#projeler">

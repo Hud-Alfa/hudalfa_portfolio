@@ -16,9 +16,15 @@ export const intro = {
     tr: 'Bilgisayar mühendisi',
     en: 'Computer engineer',
   } satisfies L,
+  /** Hero'da sırayla dönen unvanlar. */
+  roles: {
+    tr: ['Full stack developer', 'Mobil developer', 'Siber güvenlik araştırmacısı'],
+    en: ['Full stack developer', 'Mobile developer', 'Security researcher'],
+  } satisfies LArr,
+  /** Sekme başlığı ve JSON-LD için tek satırlık hali. */
   role: {
-    tr: 'Full stack developer  /  Siber güvenlik araştırmacısı',
-    en: 'Full stack developer  /  Security researcher',
+    tr: 'Full stack & mobil developer · Siber güvenlik araştırmacısı',
+    en: 'Full stack & mobile developer · Security researcher',
   } satisfies L,
   lead: {
     tr: 'Merhaba, ben Yasir. React Native ile çapraz platform uygulamalar geliştiriyor, aynı zamanda siber güvenlik üzerine çalışıyorum. Son olarak Tekhnelogos’ta doğal gaz dağıtım firmaları için tarayıcıda çalışan bir CAD editörü geliştirdim.',

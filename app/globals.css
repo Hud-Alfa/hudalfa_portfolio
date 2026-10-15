@@ -12,6 +12,7 @@
   --txt:#A9BED2;
   --dim:#718BA2;
   --wrap:1240px;
+  --hdr:66px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -339,3 +340,23 @@ body.lock{overflow:hidden}
 
 .mdl-box:focus{outline:none}
 .badge a{text-decoration:none;color:inherit;min-width:0}
+
+/* --- Arşiv: iki satır, bölüm sabitlenirken yatay kayma --- */
+.hs{position:relative}
+.hs-track{will-change:transform}
+.hs-bar{display:none}
+.hs.on .hs-pin{position:sticky;top:var(--hdr);height:calc(100vh - var(--hdr));display:flex;flex-direction:column;justify-content:center}
+.hs.on .hs-view{overflow:hidden}
+.hs.on .hs-track{grid-template-columns:none;grid-auto-flow:column;grid-template-rows:repeat(2,minmax(0,1fr));grid-auto-columns:300px;transition:transform .1s linear}
+.hs.on .hs-track .rcard{min-height:0}
+.hs.on .hs-bar{display:block;height:2px;background:var(--edge);border-radius:2px;margin-top:26px;overflow:hidden}
+.hs.on .hs-bar i{display:block;height:100%;background:var(--cyan);border-radius:2px;transition:width .1s linear}
+.hs.on .shead{margin-bottom:34px}
+
+/* --- Hero: dönen unvan satırı --- */
+.role{position:relative;height:1.6em;overflow:hidden}
+.role span{position:absolute;left:0;top:0;width:100%;transform:translateY(-115%);opacity:0;transition:transform .62s cubic-bezier(.22,.7,.3,1),opacity .4s ease}
+.role span.on{transform:none;opacity:1}
+.role span.off{transform:translateY(115%);opacity:0}
+.role--static{height:auto;overflow:visible}
+.role--static span{position:static;transform:none;opacity:1;transition:none}
