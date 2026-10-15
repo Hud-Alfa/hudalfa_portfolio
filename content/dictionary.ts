@@ -63,6 +63,7 @@ export const ui = {
     highlights: { tr: 'Öne çıkanlar', en: 'Highlights' },
     tech: { tr: 'Teknolojiler', en: 'Technologies' },
     openGithub: { tr: 'GitHub’da aç', en: 'Open on GitHub' },
+    openLive: { tr: 'Canlı siteyi aç', en: 'Open the live site' },
     privateRepo: { tr: 'Depo özel', en: 'Private repo' },
     openRepos: { tr: 'açık proje', en: 'open projects' },
     allOnGithub: { tr: 'GitHub’da tümü', en: 'All on GitHub' },

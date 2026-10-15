@@ -34,6 +34,8 @@ export type Project = {
   tech?: string[];
   note?: L;
   github?: string;
+  /** Yayında olan ürün adresi. Detay penceresinde ayrı bir düğme olarak çıkar. */
+  live?: string;
   /** Açık deposu yok: karta "depo özel" rozeti düşer, GitHub yerine detay açılır. */
   privateRepo?: boolean;
 };
@@ -301,31 +303,46 @@ export const projects: Project[] = [
     stack: 'Meta Graph API · Webhook',
     tag: { tr: 'Python · Meta Graph API', en: 'Python · Meta Graph API' },
     privateRepo: true,
+    live: 'https://begbegdm.vercel.app',
+    cover: g('begbegdm/begbegdm-01-anasayfa.png'),
     short: {
-      tr: 'Instagram doğrudan mesaj akışlarını kural tabanlı algoritmalarla anlık yöneten otomasyon; gelen mesajları analiz edip otomatik yanıtlıyor.',
-      en: 'Automation that handles Instagram direct message flows in real time with rule-based logic, analysing incoming messages and replying automatically.',
+      tr: 'Instagram yorumlarına otomatik DM gönderen çok kullanıcılı ürün; anahtar kelime kuralları, butonlu mesajlar ve yönetim paneli.',
+      en: 'A multi-tenant product that auto-replies to Instagram comments by DM: keyword rules, messages with buttons, and an admin panel.',
     },
     desc: {
-      tr: 'Meta Graph API ve Webhook entegrasyonları temel alınarak Python ile geliştirilen, Instagram doğrudan mesaj akışlarını anlık olarak yöneten bir otomasyon. Gelen mesajlar kural tabanlı algoritmalarla analiz edilip otomatik yanıtlanarak iş yükü azaltıldı ve etkileşim hızı artırıldı.',
-      en: 'An automation built in Python on top of the Meta Graph API and webhooks that manages Instagram direct message flows in real time. Incoming messages are analysed with rule-based logic and answered automatically, cutting manual workload and speeding up responses.',
+      tr: 'Meta Graph API ve Webhook entegrasyonları üzerine kurulu, Instagram yorumlarına saniyeler içinde otomatik DM gönderen çok kullanıcılı bir ürün. Kullanıcılar Instagram ile giriş yapıp kendi gönderileri için kural tanımlıyor: belirli anahtar kelimeler yakalandığında ya da her yoruma, altında dokunulabilir bağlantı butonu olan bir DM gidiyor. Gelen yorumlar kural tabanlı algoritmalarla analiz edilip otomatik yanıtlanarak iş yükü azaltıldı ve etkileşim hızı artırıldı.',
+      en: 'A multi-tenant product built on the Meta Graph API and webhooks that answers Instagram comments with a direct message within seconds. Users sign in with Instagram and define rules for their own posts: when specific keywords appear — or on every comment — a DM goes out with a tappable link button underneath. Incoming comments are analysed with rule-based logic and answered automatically, cutting manual workload and speeding up engagement.',
     },
     hi: {
       tr: [
-        'Gelen mesajların kural tabanlı analizi',
-        'Otomatik yanıtlama ile iş yükünün azaltılması',
-        'Webhook ile anlık mesaj akışı',
+        'Instagram ile giriş ve gönderi başına otomasyon tanımlama',
+        'Anahtar kelime kuralları; Türkçe karakter ve büyük-küçük harf farkı gözetmez',
+        'Mesaj altında bağlantı butonu ve tıklanma sayısının takibi',
+        'Bağlantıyı yalnızca takip edenlere verme seçeneği',
+        'Gönderi başına yakalanan yorum, giden DM ve başarısız gönderim istatistikleri',
+        'Abonelik durumları, ödemeler ve DM kuyruğunu gösteren yönetim paneli',
+        'Hesabı ve tüm verileri kullanıcının kendisinin silebilmesi',
       ],
       en: [
-        'Rule-based analysis of incoming messages',
-        'Automatic replies that cut manual workload',
-        'Real-time message flow through webhooks',
+        'Instagram sign-in and per-post automation rules',
+        'Keyword rules that ignore case and Turkish character differences',
+        'A link button under the message, with click tracking',
+        'Option to share the link only with followers',
+        'Per-post stats: comments caught, DMs sent, deliveries failed',
+        'Admin panel covering subscription states, payments and the DM queue',
+        'Self-service account and data deletion',
       ],
     },
-    tech: ['Python', 'Meta Graph API', 'Webhook'],
-    imgs: [],
+    tech: ['Python', 'Meta Graph API', 'Webhook', 'Vercel'],
+    imgs: [
+      'begbegdm-01-anasayfa.png',
+      'begbegdm-02-panel.png',
+      'begbegdm-03-otomasyon-ayarlari.png',
+      'begbegdm-04-admin-paneli.png',
+    ].map((f) => g(`begbegdm/${f}`)),
     note: {
-      tr: 'Depo özel; ekran görüntüleri henüz eklenmedi.',
-      en: 'Private repository; screenshots not added yet.',
+      tr: 'Ürün yayında; deposu özel tutuluyor.',
+      en: 'The product is live; its repository is kept private.',
     },
   },
   {

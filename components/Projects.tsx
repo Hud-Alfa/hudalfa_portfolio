@@ -323,11 +323,23 @@ export default function Projects({ lang, repoCount }: { lang: Lang; repoCount: n
               </div>
             ) : null}
 
-            {open.github ? (
+            {open.live || open.github ? (
               <div className="mdl-act">
-                <a className="btn" href={open.github} target="_blank" rel="noopener">
-                  {t(ui.project.openGithub, lang)} →
-                </a>
+                {open.live ? (
+                  <a className="btn" href={open.live} target="_blank" rel="noopener">
+                    {t(ui.project.openLive, lang)} →
+                  </a>
+                ) : null}
+                {open.github ? (
+                  <a
+                    className={`btn${open.live ? ' btn--plain' : ''}`}
+                    href={open.github}
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    {t(ui.project.openGithub, lang)} →
+                  </a>
+                ) : null}
               </div>
             ) : null}
           </div>
