@@ -96,6 +96,13 @@ export const skills: SkillGroup[] = [
         },
       },
       {
+        name: 'PostgreSQL',
+        tip: {
+          tr: 'İlişkisel veriyi güçlü sorgu yetenekleriyle modelleyip indeksleme ve bütünlük kurallarıyla yönetiyorum.',
+          en: 'Modelling relational data with its stronger query features, handling indexing and integrity constraints.',
+        },
+      },
+      {
         name: 'MySQL',
         tip: {
           tr: 'Web uygulamaları için ilişkisel şema tasarlayıp sorguları yönetiyorum.',

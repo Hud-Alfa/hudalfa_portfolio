@@ -11,7 +11,7 @@ export const experience: Job[] = [
   {
     when: { tr: 'Temmuz — Eylül 2026', en: 'July — September 2026' },
     org: { tr: 'Tekhnelogos · İstanbul', en: 'Tekhnelogos · Istanbul' },
-    role: { tr: 'Frontend — Yazılım Stajyeri', en: 'Frontend — Software Intern' },
+    role: { tr: 'Full Stack — Yazılım Stajyeri', en: 'Full Stack — Software Intern' },
     points: {
       tr: [
         'Doğalgaz dağıtım ve plan çizim firmaları odaklı bir CAD uygulaması geliştirdim.',
