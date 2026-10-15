@@ -376,6 +376,30 @@ export const projects: Project[] = [
     },
   },
   {
+    slug: 'sekme',
+    title: 'Sekme',
+    cats: ['mobil'],
+    lang: { name: 'TypeScript', color: '#3178c6' },
+    stack: 'Expo · Reanimated · SQLite',
+    short: {
+      tr: 'Sonsuz top-blok mobil oyunu: bölüm ve can yok, zorluk ilerlemeye bağlı bir eğriden doğuyor, toplar yalnızca görünüm değiştiriyor.',
+      en: 'An endless ball-and-block mobile game: no levels or lives, difficulty grows from a progression curve, and the balls are cosmetic only.',
+    },
+    github: 'https://github.com/Hud-Alfa/sekme',
+  },
+  {
+    slug: 'alphenix-voice-assistant',
+    title: 'Alphenix',
+    cats: ['ai', 'sistem'],
+    lang: { name: 'Python', color: '#3572A5' },
+    stack: 'Python · asyncio · Ollama',
+    short: {
+      tr: 'Windows için sesle çalışan kişisel yapay zeka asistanı; uygulamaları, dosyaları ve tarayıcıyı yönetiyor, riskli her işlemde izin soruyor.',
+      en: 'A voice-first personal AI assistant for Windows that drives apps, files and the browser, and asks permission before anything risky.',
+    },
+    github: 'https://github.com/Hud-Alfa/alphenix-voice-assistant',
+  },
+  {
     slug: 'local-foundry-rag',
     title: 'local-foundry-rag',
     cats: ['ai'],
