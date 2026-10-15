@@ -86,7 +86,7 @@ export const skills: SkillGroup[] = [
     ],
   },
   {
-    label: { tr: 'Veri tabanı', en: 'Databases' },
+    label: { tr: 'Veri tabanı ve depolama', en: 'Data and storage' },
     items: [
       {
         name: 'SQL Server',
@@ -110,10 +110,38 @@ export const skills: SkillGroup[] = [
         },
       },
       {
+        name: 'SQLite',
+        tip: {
+          tr: 'Sunucu gerektirmeyen, cihaz üzerinde çalışan yerel veri saklama için kullanıyorum; vektör deposu da bunun üzerine kurduğum oldu.',
+          en: 'Serverless, on-device storage — I have even built a vector store on top of it.',
+        },
+      },
+      {
         name: 'Firebase',
         tip: {
           tr: 'Kimlik doğrulama, gerçek zamanlı veri ve dosya depolama ihtiyaçlarını tek çatıda çözüyorum.',
           en: 'Solving authentication, realtime data and file storage needs under one roof.',
+        },
+      },
+      {
+        name: 'Redis',
+        tip: {
+          tr: 'Sık istenen veriyi bellekte tutarak yanıt süresini kısaltıyor, oturum ve kuyruk işlerinde kullanıyorum.',
+          en: 'Keeping hot data in memory to cut response times, and using it for sessions and queues.',
+        },
+      },
+      {
+        name: 'MinIO',
+        tip: {
+          tr: 'S3 uyumlu nesne depolamayla dosyaları sürümleyip uygulamadan ayrı tutuyorum.',
+          en: 'S3-compatible object storage: versioning files and keeping them out of the application.',
+        },
+      },
+      {
+        name: 'Elasticsearch',
+        tip: {
+          tr: 'Log ve metin aramalarını indeksleyerek büyük veri kümelerinde hızlı sorgulama yapıyorum.',
+          en: 'Indexing logs and text so large data sets stay fast to query.',
         },
       },
     ],

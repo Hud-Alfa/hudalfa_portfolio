@@ -238,7 +238,7 @@ export default function Projects({ lang, repoCount }: { lang: Lang; repoCount: n
 
             <div className="hs-view" ref={hsView}>
               <div
-                className="rgrid hs-track"
+                className="hs-track"
                 style={pinned ? { transform: `translateX(${-shift}px)` } : undefined}
               >
           {shown.map((p) => {

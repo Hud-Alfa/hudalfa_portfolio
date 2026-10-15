@@ -343,12 +343,16 @@ body.lock{overflow:hidden}
 
 /* --- Arşiv: iki satır, bölüm sabitlenirken yatay kayma --- */
 .hs{position:relative}
-.hs-track{will-change:transform}
+/* Kartlar her koşulda iki satır. Sabitleme yoksa parmakla/fareyle kaydırılır. */
+.hs-view{overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;scrollbar-color:var(--edge2) transparent;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+.hs-view::-webkit-scrollbar{height:6px}
+.hs-view::-webkit-scrollbar-thumb{background:var(--edge2);border-radius:3px}
+.hs-track{display:grid;gap:12px;grid-auto-flow:column;grid-template-rows:repeat(2,minmax(0,1fr));grid-auto-columns:min(300px,78vw);will-change:transform;padding-bottom:4px}
+.hs-track .rcard{min-height:0;scroll-snap-align:start}
 .hs-bar{display:none}
 .hs.on .hs-pin{position:sticky;top:var(--hdr);height:calc(100vh - var(--hdr));display:flex;flex-direction:column;justify-content:center}
-.hs.on .hs-view{overflow:hidden}
-.hs.on .hs-track{grid-template-columns:none;grid-auto-flow:column;grid-template-rows:repeat(2,minmax(0,1fr));grid-auto-columns:300px;transition:transform .1s linear}
-.hs.on .hs-track .rcard{min-height:0}
+.hs.on .hs-view{overflow:hidden;scroll-snap-type:none}
+.hs.on .hs-track{grid-auto-columns:300px;transition:transform .1s linear;padding-bottom:0}
 .hs.on .hs-bar{display:block;height:2px;background:var(--edge);border-radius:2px;margin-top:26px;overflow:hidden}
 .hs.on .hs-bar i{display:block;height:100%;background:var(--cyan);border-radius:2px;transition:width .1s linear}
 .hs.on .shead{margin-bottom:34px}
