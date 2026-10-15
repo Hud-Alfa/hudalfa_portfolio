@@ -1,5 +1,6 @@
 'use client';
 
+import { createPortal } from 'react-dom';
 import { useEffect, useRef, useState } from 'react';
 import type { Lang } from '@/content/types';
 import { certificates, type Certificate } from '@/content/certificates';
@@ -93,7 +94,7 @@ export default function Certificates({ lang }: { lang: Lang }) {
         <div className="hud-foot">{t(ui.hud.foot, lang)}</div>
       </div>
 
-      {open ? (
+      {open ? createPortal(
         <div
           className="mdl"
           onClick={(e) => {
@@ -135,7 +136,7 @@ export default function Certificates({ lang }: { lang: Lang }) {
             </div>
           </div>
         </div>
-      ) : null}
+      , document.body) : null}
     </section>
   );
 }

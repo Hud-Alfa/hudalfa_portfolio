@@ -1,5 +1,6 @@
 'use client';
 
+import { createPortal } from 'react-dom';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import type { Lang } from '@/content/types';
@@ -83,13 +84,20 @@ export default function Projects({ lang, repoCount }: { lang: Lang; repoCount: n
 
   // Arşiv iki satıra iniyor; bölüm ekrana sabitlenirken kartlar yana kayıyor.
   // Kayma bitince sabitleme kalkıyor ve sayfa normal akışına dönüyor.
-  const COL = 300;
+  const COL = 340;
   const GAP = 12;
   const hsWrap = useRef<HTMLDivElement>(null);
+  const hsPin = useRef<HTMLDivElement>(null);
   const hsView = useRef<HTMLDivElement>(null);
+  const hsTrack = useRef<HTMLDivElement>(null);
   const [shift, setShift] = useState(0);
-  const [maxShift, setMaxShift] = useState(0);
   const [pinned, setPinned] = useState(false);
+  const [trackW, setTrackW] = useState(0);
+  const [viewW, setViewW] = useState(0);
+  // Açıklamalar kırpılmıyor; iki satır ekrana sığmıyorsa şerit orantılı küçülüyor.
+  const [scale, setScale] = useState(1);
+  const [natH, setNatH] = useState(0);
+  const maxShift = Math.max(0, Math.round(trackW * scale - viewW));
 
   useEffect(() => {
     const wide = window.matchMedia('(min-width: 901px)');
@@ -99,11 +107,10 @@ export default function Projects({ lang, repoCount }: { lang: Lang; repoCount: n
       if (!view) return;
       // Sütun genişliği sabit olduğu için şerit genişliği ölçmeden hesaplanabiliyor.
       const cols = Math.ceil(shown.length / 2);
-      const trackW = cols * COL + Math.max(0, cols - 1) * GAP;
-      const m = Math.max(0, trackW - view.clientWidth);
-      setMaxShift(m);
-      setPinned(wide.matches && !calm.matches && m > 0);
-      setShift((s) => Math.min(s, m));
+      const w = cols * COL + Math.max(0, cols - 1) * GAP;
+      setTrackW(w);
+      setViewW(view.clientWidth);
+      setPinned(wide.matches && !calm.matches && w > view.clientWidth);
     };
     measure();
     // Eşik atlandığında resize olayı her zaman gelmiyor; sorguyu da dinliyoruz.
@@ -116,6 +123,44 @@ export default function Projects({ lang, repoCount }: { lang: Lang; repoCount: n
       calm.removeEventListener('change', measure);
     };
   }, [shown.length]);
+
+  // Sabitlenen alanda başlık, sekmeler ve çubuktan geriye kalan yükseklik
+  // şeridin doğal yüksekliğinden azsa şerit o oranda küçültülüyor.
+  useEffect(() => {
+    if (!pinned) {
+      setScale(1);
+      setNatH(0);
+      return;
+    }
+    const fit = () => {
+      const pin = hsPin.current;
+      const view = hsView.current;
+      const track = hsTrack.current;
+      if (!pin || !view || !track) return;
+      const outer = (el: Element) => {
+        const cs = getComputedStyle(el);
+        return (el as HTMLElement).offsetHeight + parseFloat(cs.marginTop) + parseFloat(cs.marginBottom);
+      };
+      let fixed = 0;
+      for (const child of Array.from(pin.children)) if (child !== view) fixed += outer(child);
+      const avail = pin.clientHeight - fixed - 32;
+      const nat = track.offsetHeight;
+      setNatH(nat);
+      setScale(nat > 0 ? Math.max(0.55, Math.min(1, avail / nat)) : 1);
+    };
+    fit();
+    // Yazı tipi geç yüklenince kartlar uzuyor; şeridin doğal boyutu her
+    // değiştiğinde yeniden sığdırıyoruz. Dönüşüm (scale) bu ölçüyü etkilemiyor.
+    const ro = new ResizeObserver(fit);
+    if (hsTrack.current) ro.observe(hsTrack.current);
+    if (hsPin.current) ro.observe(hsPin.current);
+    document.fonts?.ready.then(fit);
+    window.addEventListener('resize', fit);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', fit);
+    };
+  }, [pinned, shown.length]);
 
   useEffect(() => {
     if (!pinned) {
@@ -214,7 +259,7 @@ export default function Projects({ lang, repoCount }: { lang: Lang; repoCount: n
           ref={hsWrap}
           style={pinned ? { height: `calc(100vh - var(--hdr) + ${maxShift}px)` } : undefined}
         >
-          <div className="hs-pin">
+          <div className="hs-pin" ref={hsPin}>
             <div className="shead">
               <div>
                 <span className="eyebrow">{t(ui.sections.archive, lang)}</span>
@@ -236,10 +281,17 @@ export default function Projects({ lang, repoCount }: { lang: Lang; repoCount: n
               ))}
             </div>
 
-            <div className="hs-view" ref={hsView}>
+            <div
+              className="hs-view"
+              ref={hsView}
+              style={pinned && natH ? { height: Math.round(natH * scale) } : undefined}
+            >
               <div
                 className="hs-track"
-                style={pinned ? { transform: `translateX(${-shift}px)` } : undefined}
+                ref={hsTrack}
+                style={
+                  pinned ? { transform: `translateX(${-shift}px) scale(${scale})` } : undefined
+                }
               >
           {shown.map((p) => {
             const detail = hasDetail(p) && !p.github;
@@ -287,7 +339,7 @@ export default function Projects({ lang, repoCount }: { lang: Lang; repoCount: n
         </div>
       </section>
 
-      {open ? (
+      {open ? createPortal(
         <div
           className="mdl"
           onClick={(e) => {
@@ -426,9 +478,9 @@ export default function Projects({ lang, repoCount }: { lang: Lang; repoCount: n
             ) : null}
           </div>
         </div>
-      ) : null}
+      , document.body) : null}
 
-      {zoom ? (
+      {zoom ? createPortal(
         <div className="mdl lb" onClick={() => setZoom(null)}>
           <button
             type="button"
@@ -440,7 +492,7 @@ export default function Projects({ lang, repoCount }: { lang: Lang; repoCount: n
           </button>
           <img src={zoom} alt="" />
         </div>
-      ) : null}
+      , document.body) : null}
     </>
   );
 }
