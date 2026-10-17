@@ -366,3 +366,96 @@ body.lock{overflow:hidden}
 .hs-track .rcard{background:rgba(6,15,24,.84)}
 .hs-track .rcard:hover{background:rgba(10,22,34,.9)}
 .hs.on .hs-track{backface-visibility:hidden}
+
+/* ---------- Asistan: buzlu cam sohbet paneli ---------- */
+.ast-tetik{position:absolute;top:-14px;right:-14px;z-index:3;display:flex;align-items:center;gap:8px;height:52px;min-width:52px;padding:0 15px;border-radius:999px;border:1px solid rgba(255,255,255,.22);background:rgba(160,190,200,.18);backdrop-filter:blur(18px) saturate(1.6);color:#fff;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.25);font:500 13.5px var(--font-sans);transition:background .25s,transform .25s,box-shadow .25s}
+.ast-tetik svg{color:var(--cyan);flex:0 0 auto}
+.ast-tetik:hover{background:rgba(160,190,200,.28);transform:translateY(-2px);box-shadow:0 14px 34px rgba(0,0,0,.4),0 0 0 4px rgba(86,208,200,.12),inset 0 1px 0 rgba(255,255,255,.3)}
+.ast-tetik.gizli{opacity:0;pointer-events:none}
+.ast-tetik:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+
+.ast-katman{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:24px 84px 24px 24px;background:rgba(1,10,16,.5);animation:astSol .25s ease}
+.ast{position:relative;width:min(980px,100%);height:min(640px,calc(100dvh - 48px));display:grid;grid-template-columns:280px 1fr;border-radius:34px;border:1px solid rgba(255,255,255,.18);background:linear-gradient(160deg,rgba(120,150,160,.3),rgba(60,80,90,.3));backdrop-filter:blur(40px) saturate(1.5);box-shadow:0 40px 90px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.22);color:#fff;animation:astGir .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes astSol{from{opacity:0}}
+@keyframes astGir{from{opacity:0;transform:translateY(14px) scale(.98)}}
+
+.ast-sol{display:flex;flex-direction:column;min-height:0;padding:26px 14px 18px;border-right:1px solid rgba(255,255,255,.1)}
+.ast-sol h3{font:600 26px var(--font-display);margin:0 12px 16px;color:#fff;letter-spacing:-.01em}
+.ast-konular{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:2px;scrollbar-width:none}
+.ast-konu{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:10px 12px;border:0;border-radius:18px;background:transparent;color:inherit;cursor:pointer;transition:background .2s}
+.ast-konu:hover:not(:disabled){background:rgba(255,255,255,.1)}
+.ast-konu:disabled{opacity:.55;cursor:default}
+.ast-ikon{flex:0 0 auto;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.14);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+.ast-konu-yazi{min-width:0;display:flex;flex-direction:column;line-height:1.35}
+.ast-konu-yazi b{font:600 14.5px var(--font-sans);color:#fff}
+.ast-konu-yazi span{font-size:12.5px;color:rgba(255,255,255,.62);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ast-yeni{display:flex;align-items:center;justify-content:center;gap:8px;margin:12px 6px 0;padding:11px;border-radius:999px;border:0;background:rgba(255,255,255,.12);color:#fff;font:500 13.5px var(--font-sans);cursor:pointer;transition:background .2s}
+.ast-yeni:hover:not(:disabled){background:rgba(255,255,255,.2)}
+.ast-yeni:disabled{opacity:.45;cursor:default}
+
+.ast-sag{display:flex;flex-direction:column;min-width:0;min-height:0}
+.ast-ust{display:flex;align-items:center;gap:12px;padding:20px 26px 14px;border-bottom:1px solid rgba(255,255,255,.08)}
+.ast-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,.3)}
+.ast-ust div{display:flex;flex-direction:column;line-height:1.3}
+.ast-ust b{font:600 16px var(--font-display);color:#fff}
+.ast-ust span{font-size:12.5px;color:rgba(255,255,255,.6)}
+
+.ast-akis{flex:1;min-height:0;overflow-y:auto;padding:20px 26px 10px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.25) transparent}
+.balon-sar{display:flex;flex-direction:column;gap:6px;max-width:78%}
+.balon-sar.ben{align-self:flex-end;align-items:flex-end}
+.balon-sar.asistan{align-self:flex-start;align-items:flex-start}
+.balon{position:relative;padding:10px 16px;border-radius:22px;font-size:14.5px;line-height:1.55;color:#fff;overflow-wrap:anywhere}
+.ast-akis > .balon{align-self:flex-start;max-width:78%}
+.balon p{margin:0}
+.balon p + p{margin-top:6px}
+.balon .ast-madde{padding-left:14px;position:relative;margin-top:3px}
+.balon .ast-madde::before{content:"";position:absolute;left:2px;top:.65em;width:5px;height:5px;border-radius:50%;background:var(--cyan)}
+.balon.asistan{background:rgba(255,255,255,.14);border-bottom-left-radius:8px}
+.balon.ben{background:rgba(86,208,200,.32);border:1px solid rgba(86,208,200,.35);border-bottom-right-radius:8px}
+.balon.yaziyor{display:flex;gap:5px;padding:14px 16px;align-self:flex-start}
+.balon.yaziyor i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.75);animation:astNokta 1.2s infinite ease-in-out}
+.balon.yaziyor i:nth-child(2){animation-delay:.15s}
+.balon.yaziyor i:nth-child(3){animation-delay:.3s}
+@keyframes astNokta{0%,60%,100%{opacity:.35;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+.ast-kaynaklar{display:flex;flex-wrap:wrap;gap:6px;padding-left:4px}
+.ast-kaynaklar button,.ast-kaynaklar span{font:500 11.5px var(--font-mono);letter-spacing:.02em;padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:rgba(255,255,255,.75)}
+.ast-kaynaklar button{cursor:pointer;color:var(--cyan);border-color:rgba(86,208,200,.4);transition:background .2s}
+.ast-kaynaklar button:hover{background:rgba(86,208,200,.14)}
+.ast-not{margin:auto 0 0;padding-top:12px;text-align:center;font-size:11.5px;color:rgba(255,255,255,.45)}
+
+.ast-mobil-konular{display:none}
+.ast-hata{margin:0 26px 8px;padding:9px 14px;border-radius:14px;background:rgba(255,120,120,.14);border:1px solid rgba(255,150,150,.3);font-size:13px;color:#ffe3e3}
+.ast-hata a{color:#fff}
+.ast-alt{display:flex;align-items:center;gap:8px;margin:6px 20px 20px;padding:6px 6px 6px 20px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.ast-alt:focus-within{border-color:rgba(86,208,200,.6)}
+.ast-alt input{flex:1;min-width:0;border:0;background:transparent;color:#fff;font:15px var(--font-sans);padding:9px 0;outline:none}
+.ast-alt input::placeholder{color:rgba(255,255,255,.5)}
+.ast-gonder{flex:0 0 auto;border:0;border-radius:999px;padding:10px 20px;background:var(--cyan);color:#03252A;font:600 14px var(--font-sans);cursor:pointer;transition:filter .2s,opacity .2s}
+.ast-gonder:hover:not(:disabled){filter:brightness(1.1)}
+.ast-gonder:disabled{opacity:.4;cursor:default}
+
+.ast-dis{position:absolute;left:calc(100% + 14px);top:0;display:flex;flex-direction:column;gap:12px}
+.ast-dis button{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.2);background:rgba(150,175,185,.24);backdrop-filter:blur(30px) saturate(1.5);color:#fff;cursor:pointer;box-shadow:0 10px 26px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.22);transition:background .2s}
+.ast-dis button:hover:not(:disabled){background:rgba(170,195,205,.36)}
+.ast-dis button:disabled{opacity:.4;cursor:default}
+.ast button:focus-visible,.ast-dis button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+
+@media(max-width:900px){
+  .ast-tetik{top:-12px;right:-6px}
+  .ast-katman{padding:0}
+  .ast{grid-template-columns:1fr;width:100%;height:100dvh;border-radius:0;border:0;background:linear-gradient(170deg,rgba(28,58,66,.97),rgba(10,32,40,.98))}
+  .ast-sol{display:none}
+  .ast-ust{padding:16px 70px 12px 18px}
+  .ast-akis{padding:16px 16px 8px}
+  .balon-sar,.ast-akis > .balon{max-width:88%}
+  .ast-mobil-konular{display:flex;gap:8px;overflow-x:auto;padding:4px 16px 6px;scrollbar-width:none}
+  .ast-mobil-konular button{flex:0 0 auto;padding:7px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;font:500 13px var(--font-sans);cursor:pointer}
+  .ast-mobil-konular button:disabled{opacity:.5}
+  .ast-hata{margin:0 16px 6px}
+  .ast-alt{margin:6px 12px max(12px,env(safe-area-inset-bottom))}
+  .ast-dis{left:auto;right:14px;top:14px;flex-direction:row;gap:8px}
+  .ast-dis button{width:42px;height:42px}
+  .ast-dis button:last-child{display:none}
+}
+@media(max-width:520px){.ast-tetik-etiket{display:none}.ast-tetik{padding:0;justify-content:center}}
+@media(prefers-reduced-motion:reduce){.ast-katman,.ast{animation:none}.balon.yaziyor i{animation:none;opacity:.7}}

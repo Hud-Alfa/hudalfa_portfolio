@@ -4,6 +4,10 @@ import { intro, site } from '@/content/site';
 import { t, ui } from '@/content/dictionary';
 import SpotifyBadge from './SpotifyBadge';
 import RoleCycle from './RoleCycle';
+import Asistan from './Asistan';
+
+// Anahtar girilmemişse canlı sitede düğme hiç görünmüyor; geliştirmede deneme yanıtı veriyor.
+const asistanAcik = Boolean(process.env.ANTHROPIC_API_KEY) || process.env.NODE_ENV !== 'production';
 
 export default function Hero({ lang }: { lang: Lang }) {
   const [first, ...rest] = site.name.split(' ');
@@ -45,6 +49,7 @@ export default function Hero({ lang }: { lang: Lang }) {
             />
           </div>
           <SpotifyBadge lang={lang} />
+          {asistanAcik ? <Asistan lang={lang} /> : null}
         </div>
       </div>
     </section>

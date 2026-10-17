@@ -6,6 +6,7 @@ import Image from 'next/image';
 import type { Lang } from '@/content/types';
 import { site } from '@/content/site';
 import { t, ui } from '@/content/dictionary';
+import { kilitle, kilitAc } from '@/lib/kilit';
 import { CATS, archive, catLabels, featured, hasDetail, type Cat, type Project } from '@/content/projects';
 
 type Filter = Cat | 'all';
@@ -49,11 +50,21 @@ export default function Projects({ lang, repoCount }: { lang: Lang; repoCount: n
 
   useEffect(() => {
     if (!open) return;
-    document.body.classList.add('lock');
+    kilitle();
     boxRef.current?.scrollTo({ top: 0 });
     closeRef.current?.focus();
-    return () => document.body.classList.remove('lock');
+    return kilitAc;
   }, [open]);
+
+  // Asistandaki proje kaynağına tıklanınca o projenin penceresi açılıyor.
+  useEffect(() => {
+    const ac = (e: Event) => {
+      const p = [...featured, ...archive].find((x) => x.slug === (e as CustomEvent<string>).detail);
+      if (p && hasDetail(p)) show(p, document.activeElement as HTMLElement);
+    };
+    window.addEventListener('hudalfa:proje', ac);
+    return () => window.removeEventListener('hudalfa:proje', ac);
+  }, [show]);
 
   useEffect(() => {
     if (!open) return;

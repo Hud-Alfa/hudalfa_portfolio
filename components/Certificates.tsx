@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { Lang } from '@/content/types';
 import { certificates, type Certificate } from '@/content/certificates';
 import { t, ui } from '@/content/dictionary';
+import { kilitle, kilitAc } from '@/lib/kilit';
 
 export default function Certificates({ lang }: { lang: Lang }) {
   const [open, setOpen] = useState<Certificate | null>(null);
@@ -13,14 +14,14 @@ export default function Certificates({ lang }: { lang: Lang }) {
 
   useEffect(() => {
     if (!open) return;
-    document.body.classList.add('lock');
+    kilitle();
     closeRef.current?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setOpen(null);
     };
     window.addEventListener('keydown', onKey);
     return () => {
-      document.body.classList.remove('lock');
+      kilitAc();
       window.removeEventListener('keydown', onKey);
     };
   }, [open]);
