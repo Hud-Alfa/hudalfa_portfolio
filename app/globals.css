@@ -368,8 +368,8 @@ body.lock{overflow:hidden}
 .hs.on .hs-track{backface-visibility:hidden}
 
 /* ---------- Asistan: buzlu cam sohbet paneli ---------- */
-.ast-tetik{position:absolute;top:-16px;right:-16px;z-index:3;display:grid;place-items:center;width:56px;height:56px;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(160,190,200,.18);backdrop-filter:blur(18px) saturate(1.6);cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.25);transition:background .25s,transform .25s,box-shadow .25s}
-.ast-tetik:hover{background:rgba(160,190,200,.28);transform:translateY(-2px) rotate(-8deg);box-shadow:0 14px 34px rgba(0,0,0,.4),0 0 0 4px rgba(86,208,200,.12),inset 0 1px 0 rgba(255,255,255,.3)}
+.ast-tetik{position:absolute;top:24px;right:24px;z-index:3;display:grid;place-items:center;width:40px;height:40px;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(7,22,40,.72);backdrop-filter:blur(14px) saturate(1.4);cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.18);transition:background .25s,transform .25s,box-shadow .25s}
+.ast-tetik:hover{background:rgba(7,22,40,.9);transform:translateY(-2px) rotate(-8deg);box-shadow:0 14px 34px rgba(0,0,0,.4),0 0 0 4px rgba(86,208,200,.12),inset 0 1px 0 rgba(255,255,255,.3)}
 .ast-tetik.gizli{opacity:0;pointer-events:none}
 .ast-tetik:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
 
@@ -440,7 +440,6 @@ body.lock{overflow:hidden}
 .ast button:focus-visible,.ast-dis button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 
 @media(max-width:900px){
-  .ast-tetik{top:-12px;right:-6px}
   .ast-katman{padding:0}
   .ast{grid-template-columns:1fr;width:100%;height:100dvh;border-radius:0;border:0;background:linear-gradient(170deg,rgba(28,58,66,.97),rgba(10,32,40,.98))}
   .ast-sol{display:none}

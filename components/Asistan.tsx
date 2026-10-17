@@ -75,7 +75,7 @@ function Svg({ d, boyut = 18 }: { d: string; boyut?: number }) {
 /** Asistanı Gemini çalıştırıyor; düğmede onun dört köşeli yıldızı. */
 function GeminiLogo() {
   return (
-    <svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true">
+    <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
       <defs>
         <linearGradient id="gemini-renk" x1="3" y1="21" x2="21" y2="3" gradientUnits="userSpaceOnUse">
           <stop offset="0" stopColor="#4285F4" />
