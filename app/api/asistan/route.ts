@@ -90,7 +90,8 @@ function metinAkisi(parcalar: AsyncIterable<string> | string[], basliklar: Recor
     async start(ctrl) {
       try {
         for await (const p of parcalar) ctrl.enqueue(kodla.encode(p));
-      } catch {
+      } catch (e) {
+        console.error('asistan:', e);
         ctrl.enqueue(kodla.encode('\n\n[!]'));
       } finally {
         ctrl.close();
@@ -168,17 +169,26 @@ export async function POST(req: Request) {
       messages: gecmisMesajlar,
     });
     let yazildi = false;
-    for await (const olay of stream) {
-      if (olay.type === 'content_block_delta' && olay.delta.type === 'text_delta') {
-        yazildi = true;
-        yield olay.delta.text;
+    try {
+      for await (const olay of stream) {
+        if (olay.type === 'content_block_delta' && olay.delta.type === 'text_delta') {
+          yazildi = true;
+          yield olay.delta.text;
+        }
       }
-    }
-    const son = await stream.finalMessage();
-    if (!yazildi || son.stop_reason === 'refusal') {
-      yield lang === 'tr'
-        ? `Bu soruya cevap veremiyorum. Yasir'e ${site.email} adresinden doğrudan yazabilirsin.`
-        : `I can't answer that one. You can write to Yasir directly at ${site.email}.`;
+      const son = await stream.finalMessage();
+      if (!yazildi || son.stop_reason === 'refusal') {
+        yield lang === 'tr'
+          ? `Bu soruya cevap veremiyorum. Yasir'e ${site.email} adresinden doğrudan yazabilirsin.`
+          : `I can't answer that one. You can write to Yasir directly at ${site.email}.`;
+      }
+    } catch (e) {
+      // API hatası (kredi, kota, kesinti): ziyaretçi ham hata yerine düz bir mesaj görüyor.
+      console.error('asistan:', e);
+      yield (yazildi ? '\n\n' : '') +
+        (lang === 'tr'
+          ? `Asistan şu anda cevap veremiyor. Yasir'e ${site.email} adresinden doğrudan yazabilirsin.`
+          : `The assistant can't answer right now. You can write to Yasir directly at ${site.email}.`);
     }
   }
 
