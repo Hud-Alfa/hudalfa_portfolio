@@ -7,7 +7,8 @@ export const dynamic = 'force-dynamic';
 
 type Mesaj = { rol: 'user' | 'assistant'; metin: string };
 
-const MODEL = 'claude-opus-5-5';
+const GEMINI_MODEL = 'gemini-3.8-flash';
+const CLAUDE_MODEL = 'claude-opus-5-5';
 const MAKS_MESAJ = 12;
 const MAKS_UZUNLUK = 600;
 
@@ -132,65 +133,117 @@ export async function POST(req: Request) {
     .map((b) => ({ id: b.parca.id, ad: b.parca.ad, slug: b.parca.slug ?? null }));
   const basliklar = { 'X-Kaynaklar': encodeURIComponent(JSON.stringify(kaynaklar)) };
 
-  if (!process.env.ANTHROPIC_API_KEY) {
+  if (!process.env.GEMINI_API_KEY && !process.env.ANTHROPIC_API_KEY) {
     // Anahtar girilmeden arayüzü ve aramayı denemek için: yalnızca geliştirmede.
     if (process.env.NODE_ENV !== 'production') {
       const ad = kaynaklar.map((k) => k.ad).join(', ') || '—';
       const demo =
         lang === 'tr'
-          ? `Bu bir deneme yanıtı: ANTHROPIC_API_KEY henüz girilmedi. Arama şu kaynakları buldu: ${ad}.`
-          : `This is a demo reply: ANTHROPIC_API_KEY is not set yet. Retrieval found: ${ad}.`;
+          ? `Bu bir deneme yanıtı: API anahtarı henüz girilmedi. Arama şu kaynakları buldu: ${ad}.`
+          : `This is a demo reply: no API key is set yet. Retrieval found: ${ad}.`;
       return metinAkisi(demo.match(/.{1,6}/gs) ?? [demo], basliklar);
     }
     return Response.json({ hata: 'kapali' }, { status: 503 });
   }
 
-  const gecmisMesajlar: Anthropic.Beta.BetaMessageParam[] = mesajlar.map((m, i) => {
-    const son = i === mesajlar.length - 1;
-    if (!son) return { role: m.rol, content: m.metin };
-    const etiket = lang === 'tr' ? ['kaynaklar', 'Soru'] : ['sources', 'Question'];
-    return {
-      role: 'user',
-      content: `<${etiket[0]}>\n${kaynakBlogu}\n</${etiket[0]}>\n\n${etiket[1]}: ${m.metin}`,
-    };
-  });
+  // Son soruya, bulunan kaynaklar ekleniyor.
+  const etiket = lang === 'tr' ? ['kaynaklar', 'Soru'] : ['sources', 'Question'];
+  const giden: Mesaj[] = mesajlar.map((m, i) =>
+    i === mesajlar.length - 1
+      ? { rol: 'user', metin: `<${etiket[0]}>\n${kaynakBlogu}\n</${etiket[0]}>\n\n${etiket[1]}: ${m.metin}` }
+      : m,
+  );
+  const sistem = talimat(lang);
 
-  const client = new Anthropic();
+  // Önce Gemini (ücretsiz katman), olmazsa Claude. Bir sağlayıcı hiç metin
+  // yazamadan hata verirse sıradakine geçiliyor.
+  const saglayicilar: { ad: string; uret: () => AsyncGenerator<string> }[] = [];
+  if (process.env.GEMINI_API_KEY) saglayicilar.push({ ad: 'gemini', uret: () => gemini(sistem, giden) });
+  if (process.env.ANTHROPIC_API_KEY) saglayicilar.push({ ad: 'claude', uret: () => claude(sistem, giden) });
 
   async function* cevap(): AsyncGenerator<string> {
-    const stream = client.beta.messages.stream({
-      model: MODEL,
-      max_tokens: 2000,
-      output_config: { effort: 'low' },
-      // Güvenlik sınıflandırıcısı bir isteği reddederse aynı istek yedek modelde yeniden denenir.
-      betas: ['server-side-fallback-2026-07-01'],
-      fallbacks: 'default',
-      system: [{ type: 'text', text: talimat(lang), cache_control: { type: 'ephemeral' } }],
-      messages: gecmisMesajlar,
-    });
     let yazildi = false;
-    try {
-      for await (const olay of stream) {
-        if (olay.type === 'content_block_delta' && olay.delta.type === 'text_delta') {
+    for (const s of saglayicilar) {
+      try {
+        for await (const parca of s.uret()) {
           yazildi = true;
-          yield olay.delta.text;
+          yield parca;
         }
+        if (!yazildi) {
+          // Model cevap vermeyi reddetti ya da içerik engellendi.
+          yield lang === 'tr'
+            ? `Bu soruya cevap veremiyorum. Yasir'e ${site.email} adresinden doğrudan yazabilirsin.`
+            : `I can't answer that one. You can write to Yasir directly at ${site.email}.`;
+        }
+        return;
+      } catch (e) {
+        // API hatası (kota, kredi, kesinti): ham hata kayda, ziyaretçiye düz mesaj.
+        console.error(`asistan (${s.ad}):`, e);
+        if (yazildi) break;
       }
-      const son = await stream.finalMessage();
-      if (!yazildi || son.stop_reason === 'refusal') {
-        yield lang === 'tr'
-          ? `Bu soruya cevap veremiyorum. Yasir'e ${site.email} adresinden doğrudan yazabilirsin.`
-          : `I can't answer that one. You can write to Yasir directly at ${site.email}.`;
-      }
-    } catch (e) {
-      // API hatası (kredi, kota, kesinti): ziyaretçi ham hata yerine düz bir mesaj görüyor.
-      console.error('asistan:', e);
-      yield (yazildi ? '\n\n' : '') +
-        (lang === 'tr'
-          ? `Asistan şu anda cevap veremiyor. Yasir'e ${site.email} adresinden doğrudan yazabilirsin.`
-          : `The assistant can't answer right now. You can write to Yasir directly at ${site.email}.`);
     }
+    yield (yazildi ? '\n\n' : '') +
+      (lang === 'tr'
+        ? `Asistan şu anda cevap veremiyor. Yasir'e ${site.email} adresinden doğrudan yazabilirsin.`
+        : `The assistant can't answer right now. You can write to Yasir directly at ${site.email}.`);
   }
 
   return metinAkisi(cevap(), basliklar);
+}
+
+// --- Sağlayıcılar ---
+
+type GeminiParca = { candidates?: { content?: { parts?: { text?: string; thought?: boolean }[] } }[] };
+
+async function* gemini(sistem: string, mesajlar: Mesaj[]): AsyncGenerator<string> {
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:streamGenerateContent?alt=sse`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY ?? '' },
+      body: JSON.stringify({
+        systemInstruction: { parts: [{ text: sistem }] },
+        contents: mesajlar.map((m) => ({ role: m.rol === 'user' ? 'user' : 'model', parts: [{ text: m.metin }] })),
+        generationConfig: { maxOutputTokens: 2048 },
+      }),
+    },
+  );
+  if (!res.ok || !res.body) throw new Error(`Gemini ${res.status}: ${(await res.text()).slice(0, 400)}`);
+
+  // Her olay "data: {...}" satırı olarak geliyor; satır parçalı gelebileceği için tamponlanıyor.
+  const okuyucu = res.body.getReader();
+  const coz = new TextDecoder();
+  let tampon = '';
+  for (;;) {
+    const { done, value } = await okuyucu.read();
+    if (done) break;
+    tampon += coz.decode(value, { stream: true });
+    const satirlar = tampon.split('\n');
+    tampon = satirlar.pop() ?? '';
+    for (const satir of satirlar) {
+      if (!satir.startsWith('data:')) continue;
+      const veri = JSON.parse(satir.slice(5)) as GeminiParca;
+      for (const p of veri.candidates?.[0]?.content?.parts ?? []) {
+        if (p.text && !p.thought) yield p.text;
+      }
+    }
+  }
+}
+
+async function* claude(sistem: string, mesajlar: Mesaj[]): AsyncGenerator<string> {
+  const client = new Anthropic();
+  const stream = client.beta.messages.stream({
+    model: CLAUDE_MODEL,
+    max_tokens: 2000,
+    output_config: { effort: 'low' },
+    // Güvenlik sınıflandırıcısı bir isteği reddederse aynı istek yedek modelde yeniden denenir.
+    betas: ['server-side-fallback-2026-07-01'],
+    fallbacks: 'default',
+    system: [{ type: 'text', text: sistem, cache_control: { type: 'ephemeral' } }],
+    messages: mesajlar.map((m) => ({ role: m.rol, content: m.metin })),
+  });
+  for await (const olay of stream) {
+    if (olay.type === 'content_block_delta' && olay.delta.type === 'text_delta') yield olay.delta.text;
+  }
+  await stream.finalMessage();
 }

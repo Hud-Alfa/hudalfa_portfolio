@@ -7,7 +7,7 @@ import RoleCycle from './RoleCycle';
 import Asistan from './Asistan';
 
 // Anahtar girilmemişse canlı sitede düğme hiç görünmüyor; geliştirmede deneme yanıtı veriyor.
-const asistanAcik = Boolean(process.env.ANTHROPIC_API_KEY) || process.env.NODE_ENV !== 'production';
+const asistanAcik = Boolean(process.env.GEMINI_API_KEY || process.env.ANTHROPIC_API_KEY) || process.env.NODE_ENV !== 'production';
 
 export default function Hero({ lang }: { lang: Lang }) {
   const [first, ...rest] = site.name.split(' ');
