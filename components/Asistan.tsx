@@ -60,7 +60,6 @@ const IKON = {
   canta: 'M4 8h16v11H4zM9 8V5h6v3M4 13h16',
   kalkan: 'M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6z',
   zarf: 'M3 6h18v12H3zM3 6l9 7 9-7',
-  parilti: 'M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z',
   carpi: 'M6 6l12 12M18 6 6 18',
   yenile: 'M4 12a8 8 0 0 1 14-5.3M20 4v5h-5M20 12a8 8 0 0 1-14 5.3M4 20v-5h5',
 } as const;
@@ -69,6 +68,25 @@ function Svg({ d, boyut = 18 }: { d: string; boyut?: number }) {
   return (
     <svg width={boyut} height={boyut} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d={d} />
+    </svg>
+  );
+}
+
+/** Asistanı Gemini çalıştırıyor; düğmede onun dört köşeli yıldızı. */
+function GeminiLogo() {
+  return (
+    <svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true">
+      <defs>
+        <linearGradient id="gemini-renk" x1="3" y1="21" x2="21" y2="3" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#4285F4" />
+          <stop offset=".55" stopColor="#9B72CB" />
+          <stop offset="1" stopColor="#D96570" />
+        </linearGradient>
+      </defs>
+      <path
+        fill="url(#gemini-renk)"
+        d="M12 1C12 7.08 16.92 12 23 12C16.92 12 12 16.92 12 23C12 16.92 7.08 12 1 12C7.08 12 12 7.08 12 1Z"
+      />
     </svg>
   );
 }
@@ -202,10 +220,10 @@ export default function Asistan({ lang }: { lang: Lang }) {
         className={`ast-tetik${acik ? ' gizli' : ''}`}
         onClick={() => setAcik(true)}
         aria-label={t(M.ac, lang)}
+        title={t(M.ac, lang)}
         aria-haspopup="dialog"
       >
-        <Svg d={IKON.parilti} boyut={20} />
-        <span className="ast-tetik-etiket">{t(M.ac, lang)}</span>
+        <GeminiLogo />
       </button>
 
       {acik
