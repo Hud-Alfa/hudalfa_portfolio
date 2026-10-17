@@ -7,7 +7,8 @@ export const dynamic = 'force-dynamic';
 
 type Mesaj = { rol: 'user' | 'assistant'; metin: string };
 
-const GEMINI_MODEL = 'gemini-3.8-flash';
+// İkincisi, ilki yoğunluktan cevap veremezse deneniyor; ikisi de ücretsiz katmanda.
+const GEMINI_MODELLER = ['gemini-3.8-flash', 'gemini-3.5-flash-lite'];
 const CLAUDE_MODEL = 'claude-opus-5-5';
 const MAKS_MESAJ = 12;
 const MAKS_UZUNLUK = 600;
@@ -158,7 +159,9 @@ export async function POST(req: Request) {
   // Önce Gemini (ücretsiz katman), olmazsa Claude. Bir sağlayıcı hiç metin
   // yazamadan hata verirse sıradakine geçiliyor.
   const saglayicilar: { ad: string; uret: () => AsyncGenerator<string> }[] = [];
-  if (process.env.GEMINI_API_KEY) saglayicilar.push({ ad: 'gemini', uret: () => gemini(sistem, giden) });
+  if (process.env.GEMINI_API_KEY) {
+    for (const model of GEMINI_MODELLER) saglayicilar.push({ ad: model, uret: () => gemini(model, sistem, giden) });
+  }
   if (process.env.ANTHROPIC_API_KEY) saglayicilar.push({ ad: 'claude', uret: () => claude(sistem, giden) });
 
   async function* cevap(): AsyncGenerator<string> {
@@ -195,9 +198,9 @@ export async function POST(req: Request) {
 
 type GeminiParca = { candidates?: { content?: { parts?: { text?: string; thought?: boolean }[] } }[] };
 
-async function* gemini(sistem: string, mesajlar: Mesaj[]): AsyncGenerator<string> {
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:streamGenerateContent?alt=sse`,
+async function* gemini(model: string, sistem: string, mesajlar: Mesaj[]): AsyncGenerator<string> {
+  const istek = () => fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY ?? '' },
@@ -208,6 +211,12 @@ async function* gemini(sistem: string, mesajlar: Mesaj[]): AsyncGenerator<string
       }),
     },
   );
+  // Ücretsiz katmanda anlık yoğunluk (503) ya da hız sınırı (429) sık; bir kez kısa bekleyip yeniden deneniyor.
+  let res = await istek();
+  if (res.status === 503 || res.status === 429) {
+    await new Promise((r) => setTimeout(r, 700));
+    res = await istek();
+  }
   if (!res.ok || !res.body) throw new Error(`Gemini ${res.status}: ${(await res.text()).slice(0, 400)}`);
 
   // Her olay "data: {...}" satırı olarak geliyor; satır parçalı gelebileceği için tamponlanıyor.
