@@ -82,6 +82,24 @@ export default async function RootLayout({
 
   return (
     <html lang={lang} className={`${display.variable} ${sans.variable} ${mono.variable}`}>
+      <head>
+        {/* Arka plan CSS içindeki bir sözde öğede duruyor; tarayıcı onu ancak stil
+            dosyasını çözdükten sonra fark ediyordu. HTML ile birlikte erkenden çekiliyor. */}
+        <link
+          rel="preload"
+          as="image"
+          href="/arkaplan/devre-dalga.webp"
+          media="(min-width: 901px)"
+          fetchPriority="high"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/arkaplan/devre-dalga-sm.webp"
+          media="(max-width: 900px)"
+          fetchPriority="high"
+        />
+      </head>
       <body>
         {children}
         <script

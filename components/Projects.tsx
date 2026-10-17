@@ -238,7 +238,6 @@ export default function Projects({ lang, repoCount }: { lang: Lang; repoCount: n
               <span className="eyebrow">{t(ui.sections.selected, lang)}</span>
               <h2 dangerouslySetInnerHTML={{ __html: t(ui.sections.featuredTitle, lang) }} />
             </div>
-            <p className="side">{t(ui.sections.featuredSide, lang)}</p>
           </div>
         </div>
 

@@ -22,10 +22,6 @@ export const ui = {
   sections: {
     selected: { tr: 'Seçilmiş çalışmalar', en: 'Selected work' },
     featuredTitle: { tr: 'Öne çıkan <b>projeler</b>', en: 'Featured <b>projects</b>' },
-    featuredSide: {
-      tr: 'Altı proje, altı farklı disiplin. Her biri ekran görüntüleri ve teknik dökümüyle kendi sayfasında.',
-      en: 'Six projects across six disciplines. Each one has its own page with screenshots and a technical breakdown.',
-    },
     archive: { tr: 'Arşiv', en: 'Archive' },
     archiveTitle: { tr: 'Tüm <b>çalışmalar</b>', en: 'All <b>work</b>' },
     profile: { tr: 'Profil', en: 'Profile' },
