@@ -14,12 +14,14 @@ export const experience: Job[] = [
     role: { tr: 'Full Stack — Yazılım Stajyeri', en: 'Full Stack — Software Intern' },
     points: {
       tr: [
-        'Doğalgaz dağıtım ve plan çizim firmaları odaklı bir CAD uygulaması geliştirdim.',
-        'Kullanıcı deneyimini merkeze alan, sürdürülebilir ve ölçeklenebilir arayüz mimarileri kurgularken güvenli yazılım prensiplerini sürece dahil ettim.',
+        'Doğalgaz dağıtım firmaları için geliştirilen web tabanlı CAD uygulamasının uçtan uca süreçlerinde rol aldım; kullanıcı deneyimi odaklı arayüzler ve Three.js ile 3D destekli çizim modülleri tasarladım.',
+        'Uygulamanın altyapı ve dağıtım süreçlerinde Docker ve Portainer kullanarak izole, kolay yönetilebilir ve ölçeklenebilir bir konteyner mimarisi kurguladım.',
+        'Geliştirme yaşam döngüsünün geneline güvenli yazılım (secure coding) prensiplerini entegre ederek projenin yapısal güvenliğini maksimize ettim.',
       ],
       en: [
-        'Built a CAD application aimed at gas distribution and drafting companies.',
-        'Designed sustainable, scalable interface architectures around user experience while bringing secure coding principles into the process.',
+        'Worked end to end on a web-based CAD application for natural gas distribution companies, designing user-experience-focused interfaces and 3D-enabled drawing modules with Three.js.',
+        'Set up an isolated, easy-to-manage and scalable container architecture for the app’s infrastructure and deployment using Docker and Portainer.',
+        'Built secure coding principles into the whole development lifecycle to maximize the project’s structural security.',
       ],
     },
   },
