@@ -52,8 +52,11 @@ main,header,footer{position:relative;z-index:1}
 .btn--plain:hover{color:var(--ice)}
 
 .shot{position:relative}
-.shot .frame{border:1px solid var(--edge);border-radius:20px;background:var(--glass);backdrop-filter:blur(16px);padding:14px}
+.shot .frame{border:1px solid var(--edge);border-radius:1000px 1000px 22px 22px;background:var(--glass);backdrop-filter:blur(16px);padding:14px}
 .shot img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;display:block}
+/* Kemer çerçeve: üst köşelerdeki dev yarıçap, tarayıcının köşe ölçeklemesiyle tam yarım daireye
+   iniyor; çerçeve ve fotoğraf aynı merkezli kalıyor. */
+.shot .frame img{aspect-ratio:4/5;object-position:50% 30%;border-radius:1000px 1000px 10px 10px}
 .badge{position:absolute;left:-10px;bottom:20px;display:flex;align-items:center;gap:10px;background:rgba(7,22,40,.94);border:1px solid var(--edge2);border-radius:999px;padding:6px 18px 6px 6px;backdrop-filter:blur(14px);text-decoration:none;max-width:min(290px,96%);transition:.25s}
 .badge:hover{border-color:var(--cyan);background:rgba(10,30,52,.96)}
 .sp-art{width:34px;height:34px;border-radius:8px;flex:0 0 auto;border:1px solid var(--edge);background:linear-gradient(135deg,#17344a,#0b1d30) center/cover no-repeat}
@@ -368,7 +371,7 @@ body.lock{overflow:hidden}
 .hs.on .hs-track{backface-visibility:hidden}
 
 /* ---------- Asistan: buzlu cam sohbet paneli ---------- */
-.ast-tetik{position:absolute;top:24px;right:24px;z-index:3;display:grid;place-items:center;width:40px;height:40px;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(7,22,40,.72);backdrop-filter:blur(14px) saturate(1.4);cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.18);transition:background .25s,transform .25s,box-shadow .25s}
+.ast-tetik{position:absolute;bottom:26px;right:26px;z-index:3;display:grid;place-items:center;width:40px;height:40px;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(7,22,40,.72);backdrop-filter:blur(14px) saturate(1.4);cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.18);transition:background .25s,transform .25s,box-shadow .25s}
 .ast-tetik:hover{background:rgba(7,22,40,.9);transform:translateY(-2px) rotate(-8deg);box-shadow:0 14px 34px rgba(0,0,0,.4),0 0 0 4px rgba(86,208,200,.12),inset 0 1px 0 rgba(255,255,255,.3)}
 .ast-tetik.gizli{opacity:0;pointer-events:none}
 .ast-tetik:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
