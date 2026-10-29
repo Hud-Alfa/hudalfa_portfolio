@@ -204,12 +204,15 @@ export async function POST(req: Request) {
 type GeminiParca = { candidates?: { content?: { parts?: { text?: string; thought?: boolean }[] } }[] };
 
 // Ücretsiz katman yoğunken ilk kelime dakikalarca gecikebiliyor. Bu süre içinde yazmaya
-// başlamayan model iptal ediliyor ve sıradakine geçiliyor.
-const GEMINI_ILK_SURE = 12_000;
+// başlamayan model iptal ediliyor ve sıradakine geçiliyor. Hafif model genelde 4–15 sn'de
+// başlıyor; büyük model yoğunlukta hiç yetişemediği için ona kısa süre tanınıyor.
+const GEMINI_ILK_SURE: Record<string, number> = { 'gemini-3.5-flash-lite': 22_000 };
+const GEMINI_ILK_SURE_VARSAYILAN = 10_000;
 
 async function* gemini(model: string, sistem: string, mesajlar: Mesaj[]): AsyncGenerator<string> {
+  const sure = GEMINI_ILK_SURE[model] ?? GEMINI_ILK_SURE_VARSAYILAN;
   const iptal = new AbortController();
-  const zamanlayici = setTimeout(() => iptal.abort(new Error(`Gemini ${GEMINI_ILK_SURE} ms içinde yazmaya başlamadı`)), GEMINI_ILK_SURE);
+  const zamanlayici = setTimeout(() => iptal.abort(new Error(`Gemini ${sure} ms içinde yazmaya başlamadı`)), sure);
   try {
     yield* geminiAkis(model, sistem, mesajlar, iptal.signal, () => clearTimeout(zamanlayici));
   } finally {
