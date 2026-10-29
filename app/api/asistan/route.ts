@@ -7,8 +7,9 @@ export const dynamic = 'force-dynamic';
 
 type Mesaj = { rol: 'user' | 'assistant'; metin: string };
 
-// İkincisi, ilki yoğunluktan cevap veremezse deneniyor; ikisi de ücretsiz katmanda.
-const GEMINI_MODELLER = ['gemini-3.8-flash', 'gemini-3.5-flash-lite'];
+// Önce hafif model: ücretsiz katmanda büyük model sık sık dakikalarca bekletiyor.
+// İlki cevap veremezse ikincisi deneniyor; ikisi de ücretsiz katmanda.
+const GEMINI_MODELLER = ['gemini-3.5-flash-lite', 'gemini-3.8-flash'];
 const CLAUDE_MODEL = 'claude-opus-5-5';
 const MAKS_MESAJ = 12;
 const MAKS_UZUNLUK = 600;
