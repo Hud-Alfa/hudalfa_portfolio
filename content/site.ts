@@ -8,7 +8,7 @@ export const site = {
   githubUser: 'Hud-Alfa',
   linkedin: 'https://www.linkedin.com/in/hudalfa/',
   instagram: 'https://www.instagram.com/yasir_hudalfa',
-  url: 'https://hudalfa.vercel.app',
+  url: 'https://hudalfa.com.tr',
 };
 
 export const intro = {
