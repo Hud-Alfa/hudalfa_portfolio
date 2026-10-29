@@ -6,7 +6,10 @@ const nextConfig = {
     ],
   },
   async redirects() {
-    // Eski Vercel adresi ve www, aynı sayfayla birlikte asıl alan adına taşınıyor.
+    // Eski Vercel adresi, aynı sayfayla birlikte asıl alan adına taşınıyor. www'ya yönlendirme
+    // konmadı: eski proje hudalfa.com.tr'yi kalıcı olarak www'ya atıyordu ve tarayıcılar bunu
+    // hatırlıyor; www'yu geri yönlendirmek döngü yaratır. www siteyi doğrudan gösteriyor,
+    // canonical etiketi zaten hudalfa.com.tr.
     const asil = (host) => ({
       source: '/:path*',
       has: [{ type: 'host', value: host }],
@@ -15,7 +18,6 @@ const nextConfig = {
     });
     return [
       asil('hudalfa.vercel.app'),
-      asil('www.hudalfa.com.tr'),
       { source: '/', destination: '/tr', permanent: false },
     ];
   },
