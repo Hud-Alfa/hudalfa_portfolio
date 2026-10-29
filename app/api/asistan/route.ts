@@ -167,11 +167,15 @@ export async function POST(req: Request) {
   async function* cevap(): AsyncGenerator<string> {
     let yazildi = false;
     for (const s of saglayicilar) {
+      const t0 = Date.now();
+      let ilk = 0;
       try {
         for await (const parca of s.uret()) {
+          if (!ilk) ilk = Date.now() - t0;
           yazildi = true;
           yield parca;
         }
+        console.log(`asistan (${s.ad}): ilk parça ${ilk} ms, toplam ${Date.now() - t0} ms`);
         if (!yazildi) {
           // Model cevap vermeyi reddetti ya da içerik engellendi.
           yield lang === 'tr'
@@ -181,7 +185,7 @@ export async function POST(req: Request) {
         return;
       } catch (e) {
         // API hatası (kota, kredi, kesinti): ham hata kayda, ziyaretçiye düz mesaj.
-        console.error(`asistan (${s.ad}):`, e);
+        console.error(`asistan (${s.ad}) ${Date.now() - t0} ms:`, e);
         if (yazildi) break;
       }
     }
@@ -198,7 +202,27 @@ export async function POST(req: Request) {
 
 type GeminiParca = { candidates?: { content?: { parts?: { text?: string; thought?: boolean }[] } }[] };
 
+// Ücretsiz katman yoğunken ilk kelime dakikalarca gecikebiliyor. Bu süre içinde yazmaya
+// başlamayan model iptal ediliyor ve sıradakine geçiliyor.
+const GEMINI_ILK_SURE = 12_000;
+
 async function* gemini(model: string, sistem: string, mesajlar: Mesaj[]): AsyncGenerator<string> {
+  const iptal = new AbortController();
+  const zamanlayici = setTimeout(() => iptal.abort(new Error(`Gemini ${GEMINI_ILK_SURE} ms içinde yazmaya başlamadı`)), GEMINI_ILK_SURE);
+  try {
+    yield* geminiAkis(model, sistem, mesajlar, iptal.signal, () => clearTimeout(zamanlayici));
+  } finally {
+    clearTimeout(zamanlayici);
+  }
+}
+
+async function* geminiAkis(
+  model: string,
+  sistem: string,
+  mesajlar: Mesaj[],
+  signal: AbortSignal,
+  basladi: () => void,
+): AsyncGenerator<string> {
   const istek = () => fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse`,
     {
@@ -209,6 +233,7 @@ async function* gemini(model: string, sistem: string, mesajlar: Mesaj[]): AsyncG
         contents: mesajlar.map((m) => ({ role: m.rol === 'user' ? 'user' : 'model', parts: [{ text: m.metin }] })),
         generationConfig: { maxOutputTokens: 2048 },
       }),
+      signal,
     },
   );
   // Ücretsiz katmanda anlık yoğunluk (503) ya da hız sınırı (429) sık; bir kez kısa bekleyip yeniden deneniyor.
@@ -233,7 +258,10 @@ async function* gemini(model: string, sistem: string, mesajlar: Mesaj[]): AsyncG
       if (!satir.startsWith('data:')) continue;
       const veri = JSON.parse(satir.slice(5)) as GeminiParca;
       for (const p of veri.candidates?.[0]?.content?.parts ?? []) {
-        if (p.text && !p.thought) yield p.text;
+        if (p.text && !p.thought) {
+          basladi();
+          yield p.text;
+        }
       }
     }
   }
