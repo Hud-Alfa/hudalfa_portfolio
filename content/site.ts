@@ -2,6 +2,8 @@ import type { L, LArr } from './types';
 
 export const site = {
   name: 'Yasir Hüdalfa Özdaş',
+  /** Arama motorlarının aynı kişi olarak eşleştirmesi için bilinen diğer adlar. */
+  alternateNames: ['Yasir Özdaş', 'Hüdalfa', 'Hudalfa', 'Yasir Hüdalfa', 'Hud-Alfa'],
   shortName: 'Hudalfa',
   email: 'ysrozdas1@gmail.com',
   github: 'https://github.com/Hud-Alfa',

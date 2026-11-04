@@ -45,7 +45,7 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
       </main>
 
       <footer className="wrap">
-        <span>© {new Date().getFullYear()} {site.name}</span>
+        <span>© {new Date().getFullYear()} {site.name} · Hüdalfa</span>
         <a href="#">{t(ui.misc.backToTop, lang)}</a>
       </footer>
 
