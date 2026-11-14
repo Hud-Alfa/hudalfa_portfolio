@@ -63,7 +63,7 @@ main,header,footer{position:relative;z-index:1}
 .ic{width:34px;height:34px;border:1px solid var(--edge);border-radius:8px;display:grid;place-items:center;color:var(--dim);transition:.25s}
 .ic:hover{color:var(--ice);border-color:var(--edge2)}
 
-.hero{padding:104px 0 96px}
+.hero{padding:52px 0 96px}
 .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:70px;align-items:center}
 .hero h1{font-family:var(--font-display);font-weight:200;font-size:clamp(38px,5vw,70px);line-height:1.02;letter-spacing:-.03em;color:var(--ice);margin:22px 0 0}
 .hero h1 b{font-weight:600}
@@ -320,7 +320,7 @@ body.lock{overflow:hidden}
 @media(max-width:700px){
   .wrap{padding:0 20px}
   .panel,.hud{padding:24px}
-  .hero{padding:64px 0 70px}
+  .hero{padding:36px 0 70px}
   .sect{padding:0 0 84px}
   .hrow2{grid-template-columns:28px 1fr;gap:14px}
   .hright{grid-column:2;justify-content:flex-start;margin-top:10px}
@@ -499,15 +499,15 @@ body.lock{overflow:hidden}
   --alt-bant:#2B3A55;
   --alt-yazi:#C9CFDA;
   --nokta:rgba(43,58,85,.09);
-  --leke1:rgba(242,140,40,.28);
-  --leke2:rgba(43,58,85,.18);
-  --leke3:rgba(242,140,40,.16);
+  --leke1:rgba(242,140,40,.18);
+  --leke2:rgba(43,58,85,.16);
+  --leke3:rgba(43,58,85,.08);
   /* Cam: yarı saydam yüzey, arkadaki renk lekelerini bulanıklaştırıyor */
   --cam-bg:linear-gradient(135deg,rgba(255,255,255,.66),rgba(255,255,255,.28));
   --cam-kenar:rgba(255,255,255,.75);
   --cam-golge:0 10px 34px rgba(43,58,85,.09),inset 0 1px 0 rgba(255,255,255,.9);
   --cam-blur:blur(22px) saturate(1.6);
-  --cam-isik:linear-gradient(135deg,rgba(255,255,255,.95),rgba(255,255,255,.2) 40%,rgba(242,140,40,.35));
+  --cam-isik:linear-gradient(135deg,rgba(255,255,255,.9),rgba(43,58,85,.08) 55%,rgba(242,140,40,.12));
   --isaret:#F28C28;
   --serit:#2B3A55;
   color-scheme:light;
@@ -548,11 +548,11 @@ body.lock{overflow:hidden}
   --alt-yazi:#B8C2BC;
   --nokta:rgba(211,207,198,.08);
   --leke1:rgba(0,106,78,.95);
-  --leke2:rgba(201,164,92,.16);
+  --leke2:rgba(201,164,92,.08);
   --leke3:rgba(0,140,103,.55);
   --cam-bg:linear-gradient(135deg,rgba(211,207,198,.16),rgba(0,106,78,.10) 55%,rgba(211,207,198,.05));
   --cam-kenar:rgba(211,207,198,.22);
-  --cam-isik:linear-gradient(135deg,rgba(255,255,255,.42),rgba(255,255,255,.04) 40%,rgba(201,164,92,.35));
+  --cam-isik:linear-gradient(135deg,rgba(255,255,255,.2),rgba(211,207,198,.08) 55%,rgba(201,164,92,.14));
   --cam-golge:0 18px 44px rgba(0,20,15,.45),inset 0 1px 0 rgba(255,255,255,.12);
   color-scheme:dark;
 }
@@ -571,19 +571,31 @@ body.lock{overflow:hidden}
 
 /* Cam yüzeyler (iki temada da): yarı saydam gövde, arkasını bulanıklaştırma,
    ışığı kıran degrade kenar ve üstte ince parlama. */
-.panel,.tl-item,.hud,.rgrid .rcard,.shot .frame,.now-grid .now-item,.chip,.btn--plain,.lang,.ic,.tema,.badge{
+.panel,.tl-item,.hud,.rgrid .rcard,.shot .frame,.now-grid .now-item{
   background:var(--cam-bg) padding-box,var(--cam-isik) border-box;
   border:1px solid transparent;
   backdrop-filter:var(--cam-blur);
   box-shadow:var(--cam-golge);
 }
+.chip,.btn--plain,.lang,.ic,.tema,.badge{
+  background:var(--cam-bg);
+  border:1px solid var(--edge);
+  backdrop-filter:var(--cam-blur);
+}
+.badge{box-shadow:var(--cam-golge)}
+.btn--plain{border-color:var(--edge2)}
+/* Üçüncü renk ölçülü: bölüm işaretleri, deneyim şeridi, aktif sekmenin alt çizgisi,
+   üzerine gelme anları ve odak halkası. Yüzeylere ve kenarlara yayılmıyor. */
+.nav a.act{box-shadow:inset 0 -2px 0 var(--isaret)}
+.rcard:hover,.panel:hover{box-shadow:var(--cam-golge),0 0 0 1px rgba(var(--acc-rgb),.28)}
+.chip[data-tip]:focus-visible,a.chip:focus-visible,:focus-visible{outline-color:var(--isaret)}
 .now-grid .now-item{border-radius:16px;padding:24px 26px}
 .now-grid{border-top:0;gap:12px}
 .tl-item{border-left-width:1px}
 .tl-item::before{content:'';position:absolute;left:0;top:18px;bottom:18px;width:3px;border-radius:0 3px 3px 0;background:var(--serit)}
 .tl-item{position:relative}
-.chip[data-tip]:hover,.chip[data-tip]:focus-visible,a.chip:hover{background:var(--navy) padding-box,var(--navy) border-box}
-.btn--plain:hover{background:var(--navy) padding-box,var(--navy) border-box}
+.chip[data-tip]:hover,.chip[data-tip]:focus-visible,a.chip:hover{background:var(--navy);border-color:var(--navy)}
+.btn--plain:hover{background:var(--navy);border-color:var(--navy)}
 /* Kayan arşiv kartları: bulanıklık yok (kaydırmayı takıltılı yapıyordu), ama aynı cam görünüm */
 .hs-track .rcard{background:var(--cam-bg) padding-box,var(--cam-isik) border-box;border:1px solid transparent;box-shadow:var(--cam-golge)}
 .hs-track .rcard:hover{background:var(--cam-bg) padding-box,var(--cam-isik) border-box}

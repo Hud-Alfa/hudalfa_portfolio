@@ -45,7 +45,18 @@ export default function Header({ lang }: { lang: Lang }) {
   return (
     <header className="hdr">
       <div className="wrap hdr-in">
-        <Link className="logo" href={`/${lang}`}>
+        <Link
+          className="logo"
+          href={`/${lang}`}
+          onClick={(e) => {
+            // Aynı sayfadayken Next.js yönlendirmesi kaydırmıyor; en üste kendimiz çıkıyoruz.
+            if (window.location.pathname === `/${lang}`) {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              history.replaceState(null, '', `/${lang}`);
+            }
+          }}
+        >
           {site.shortName}
         </Link>
 
