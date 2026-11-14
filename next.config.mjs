@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    // Profil fotoğrafı varsayılan 75 yerine 92 kaliteyle sıkıştırılıyor.
+    qualities: [75, 92],
     remotePatterns: [
       { protocol: 'https', hostname: 'i.scdn.co' },
     ],

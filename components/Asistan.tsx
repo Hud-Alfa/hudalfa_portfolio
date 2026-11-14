@@ -259,7 +259,7 @@ export default function Asistan({ lang }: { lang: Lang }) {
                 <section className="ast-sag">
                   <header className="ast-ust">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/gorsel/profil-v2.jpg" alt="" className="ast-avatar" />
+                    <img src="/gorsel/profil-v3.jpg" alt="" className="ast-avatar" />
                     <div>
                       <b>{t(M.ad, lang)}</b>
                       <span>{t(M.alt, lang)}</span>

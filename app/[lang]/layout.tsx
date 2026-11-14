@@ -100,7 +100,7 @@ export default async function RootLayout({
     familyName: 'Özdaş',
     jobTitle: t(intro.role, lang),
     description: t(SEO_ACIKLAMA, lang),
-    image: `${site.url}/gorsel/profil-v2.jpg`,
+    image: `${site.url}/gorsel/profil-v3.jpg`,
     email: `mailto:${site.email}`,
     url: site.url,
     sameAs: [site.github, site.linkedin, site.instagram],

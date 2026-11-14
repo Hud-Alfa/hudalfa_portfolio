@@ -39,10 +39,11 @@ export default function Hero({ lang }: { lang: Lang }) {
         <div className="shot">
           <div className="frame">
             <Image
-              src="/gorsel/profil-v2.jpg"
+              src="/gorsel/profil-v3.jpg"
               alt={site.name}
-              width={480}
-              height={480}
+              width={600}
+              height={750}
+              quality={92}
               priority
               sizes="(max-width: 1080px) 400px, 420px"
               style={{ width: '100%', height: 'auto' }}

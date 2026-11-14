@@ -13,7 +13,7 @@ export const contentType = 'image/png';
 export default async function Image({ params }: { params: Promise<{ lang: string }> }) {
   const { lang: raw } = await params;
   const lang: Lang = isLang(raw) ? raw : 'tr';
-  const foto = await readFile(join(process.cwd(), 'public/gorsel/profil-v2.jpg'));
+  const foto = await readFile(join(process.cwd(), 'public/gorsel/profil-v3.jpg'));
   const src = `data:image/jpeg;base64,${foto.toString('base64')}`;
 
   return new ImageResponse(
@@ -26,7 +26,7 @@ export default async function Image({ params }: { params: Promise<{ lang: string
           alignItems: 'center',
           gap: 64,
           padding: '0 80px',
-          background: 'linear-gradient(135deg, #1F3A5F 0%, #162B47 100%)',
+          background: 'linear-gradient(135deg, #2B3A55 0%, #1F2A3F 100%)',
           color: '#F6F5F0',
           fontFamily: 'sans-serif',
         }}
