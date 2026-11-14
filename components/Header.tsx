@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { Lang } from '@/content/types';
 import { site } from '@/content/site';
 import { t, ui } from '@/content/dictionary';
+import TemaDugmesi from './TemaDugmesi';
 
 const NAV = [
   { id: 'projeler', label: ui.nav.projects },
@@ -68,6 +69,8 @@ export default function Header({ lang }: { lang: Lang }) {
             </Link>
             <Link href={`/${other}`}>{other.toUpperCase()}</Link>
           </div>
+
+          <TemaDugmesi lang={lang} />
 
           <a className="ic" href={site.github} target="_blank" rel="noopener" aria-label="GitHub">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">

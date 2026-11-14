@@ -86,7 +86,6 @@ export default function Certificates({ lang }: { lang: Lang }) {
               </div>
               <div className="hright">
                 <span className="hwhen">{t(c.whenShort, lang)}</span>
-                <span className="hverify">{t(ui.hud.open, lang)}</span>
               </div>
             </div>
           ))}

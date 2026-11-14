@@ -81,6 +81,9 @@ const ANAHTAR: Record<Lang, string[]> = {
   en: ['full stack developer', 'mobile developer', 'security researcher', 'React Native', 'computer engineer', 'portfolio'],
 };
 
+// Kayıtlı seçim yoksa işletim sisteminin tercihine bakılıyor.
+const TEMA_BETIGI = `try{var t=localStorage.getItem('tema');if(t!=='light'&&t!=='dark')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t}catch(e){}`;
+
 export default async function RootLayout({
   children,
   params,
@@ -134,7 +137,11 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang={lang} className={`${display.variable} ${sans.variable} ${mono.variable}`}>
+    <html lang={lang} className={`${display.variable} ${sans.variable} ${mono.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Tema ilk boyamadan önce uygulanıyor; yoksa koyu temada sayfa bir an açık görünürdü. */}
+        <script dangerouslySetInnerHTML={{ __html: TEMA_BETIGI }} />
+      </head>
       <body>
         {children}
         <script
