@@ -18,6 +18,14 @@
   --ice:#1F3A5F;
   --txt:#3D5170;
   --dim:#6B7A90;
+  /* Lacivert blokların zemini: köşede kumquat ışığı, karşı köşede açık denim tonu,
+     üstünde ince nokta dokusu. Düz lacivert yerine derinlik veriyor. */
+  --lacivert-zemin:
+    radial-gradient(70% 90% at 100% 0%,rgba(242,140,40,.30),transparent 60%),
+    radial-gradient(60% 80% at 0% 100%,rgba(92,140,200,.38),transparent 62%),
+    radial-gradient(rgba(246,245,240,.10) 1px,transparent 1.3px) 0 0/18px 18px,
+    linear-gradient(155deg,#27497A 0%,var(--navy) 45%,var(--navy2) 100%);
+  --lacivert-golge:0 30px 60px -24px rgba(22,43,71,.55),inset 0 2px 0 rgba(242,140,40,.7),inset 0 0 0 1px rgba(255,255,255,.06);
   --wrap:1240px;
   --hdr:66px;
 }
@@ -185,7 +193,7 @@ section{position:relative}
 .tl li{font-size:14px;line-height:1.75;color:var(--dim);padding-left:18px;position:relative;font-weight:300}
 .tl li::before{content:'';position:absolute;left:0;top:11px;width:7px;height:1px;background:var(--cyan)}
 
-.hud{position:relative;border:1px solid var(--edge2);background:linear-gradient(180deg,var(--navy),var(--navy2));padding:40px 38px 34px;box-shadow:0 0 60px rgba(242,140,40,.07),inset 0 0 44px rgba(242,140,40,.045)}
+.hud{position:relative;border:1px solid var(--edge2);background:var(--lacivert-zemin);padding:40px 38px 34px;box-shadow:var(--lacivert-golge)}
 .hud span.cnr{position:absolute;width:16px;height:16px;border:1px solid var(--cyan)}
 .cnr.tl0{top:-1px;left:-1px;border-right:0;border-bottom:0}
 .cnr.tr0{top:-1px;right:-1px;border-left:0;border-bottom:0}
@@ -210,7 +218,7 @@ section{position:relative}
 .hverify:hover{background:rgba(242,140,40,.12)}
 .hud-foot{margin-top:26px;text-align:center;font-family:var(--font-mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim)}
 
-.ct{background:linear-gradient(160deg,var(--navy),var(--navy2));border-color:transparent;display:grid;grid-template-columns:.95fr 1.05fr;gap:48px;align-items:start;padding:34px 38px}
+.ct{background:var(--lacivert-zemin);box-shadow:var(--lacivert-golge);border-color:rgba(246,245,240,.1);display:grid;grid-template-columns:.95fr 1.05fr;gap:48px;align-items:start;padding:34px 38px}
 .ct h3{font-family:var(--font-display);font-weight:200;font-size:29px;color:var(--ice);line-height:1.15;letter-spacing:-.02em;margin:14px 0 10px}
 .ct h3 b{font-weight:600}
 .ct p{font-size:14px;line-height:1.75;color:var(--dim);font-weight:300;max-width:340px}
