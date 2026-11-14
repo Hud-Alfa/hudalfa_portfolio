@@ -46,7 +46,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 main,header,footer{position:relative;z-index:1}
 .wrap{max-width:var(--wrap);margin:0 auto;padding:0 36px}
 .eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--cyan);display:inline-flex;align-items:center;gap:10px}
-.eyebrow::before{content:'';width:5px;height:5px;background:var(--kumquat);transform:rotate(45deg);flex:0 0 auto}
+.eyebrow::before{content:'';width:5px;height:5px;background:var(--isaret);transform:rotate(45deg);flex:0 0 auto}
 
 .hdr{position:sticky;top:0;z-index:50;backdrop-filter:blur(18px);background:var(--hdr-bg);border-bottom:1px solid var(--edge)}
 .hdr-in{display:flex;align-items:center;justify-content:space-between;gap:28px;height:66px}
@@ -499,51 +499,61 @@ body.lock{overflow:hidden}
   --alt-bant:#2B3A55;
   --alt-yazi:#C9CFDA;
   --nokta:rgba(43,58,85,.09);
-  --leke1:rgba(242,140,40,.16);
-  --leke2:rgba(43,58,85,.10);
-  --leke3:rgba(242,140,40,.08);
+  --leke1:rgba(242,140,40,.28);
+  --leke2:rgba(43,58,85,.18);
+  --leke3:rgba(242,140,40,.16);
   /* Cam: yarı saydam yüzey, arkadaki renk lekelerini bulanıklaştırıyor */
-  --cam-bg:linear-gradient(135deg,rgba(255,255,255,.72),rgba(255,255,255,.38));
+  --cam-bg:linear-gradient(135deg,rgba(255,255,255,.66),rgba(255,255,255,.28));
   --cam-kenar:rgba(255,255,255,.75);
   --cam-golge:0 10px 34px rgba(43,58,85,.09),inset 0 1px 0 rgba(255,255,255,.9);
-  --cam-blur:blur(18px) saturate(1.5);
+  --cam-blur:blur(22px) saturate(1.6);
+  --cam-isik:linear-gradient(135deg,rgba(255,255,255,.95),rgba(255,255,255,.2) 40%,rgba(242,140,40,.35));
+  --isaret:#F28C28;
+  --serit:#2B3A55;
   color-scheme:light;
 }
 /* Koyu tema: Bottle Green zemin, Pebble Grey yazı ve dolgular */
 :root[data-theme='dark']{
-  --salt:#0F2B23;
-  --salt2:#143329;
+  /* Bottle Green #006A4E asıl ton. Sayfa zemini onun koyu gölgesi; #006A4E'nin kendisi
+     camların arkasındaki ışık lekelerinde ve yüzeylerde. Pirinç #C9A45C ince vurgu. */
+  --sise:#006A4E;
+  --pirinc:#C9A45C;
+  --salt:#003F2E;
+  --salt2:#004D39;
   --navy:#D3CFC6;
   --navy2:#BDB8AD;
   --kumquat:#E3DFD6;
   --acc-hover:#F2EFE8;
-  --on-acc:#0F2B23;
-  --acc-rgb:143,195,169;
-  --void:#0B211B;
-  --deep:#0B241D;
-  --glass:rgba(211,207,198,.06);
-  --glass2:rgba(211,207,198,.12);
-  --edge:rgba(211,207,198,.14);
-  --edge2:rgba(211,207,198,.28);
-  --cyan:#9CCBB3;
-  --ice:#EDEAE3;
-  --txt:#C8C4BB;
-  --dim:#909C95;
-  --blok-rgb:21,66,52;
-  --blok-derin-rgb:7,24,19;
-  --blok:#0B241D;
-  --blok-zemin:linear-gradient(180deg,#174636,#0D2E24);
-  --hdr-bg:rgba(15,43,35,.6);
-  --yuzey:#143329;
-  --alt-bant:#0A211A;
-  --alt-yazi:#A9B3AD;
-  --nokta:rgba(211,207,198,.07);
-  --leke1:rgba(46,139,103,.30);
-  --leke2:rgba(211,207,198,.07);
-  --leke3:rgba(30,110,82,.22);
-  --cam-bg:linear-gradient(135deg,rgba(211,207,198,.11),rgba(211,207,198,.03));
-  --cam-kenar:rgba(211,207,198,.16);
-  --cam-golge:0 12px 36px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.07);
+  --on-acc:#003F2E;
+  --acc-rgb:201,164,92;
+  --isaret:#C9A45C;
+  --serit:#C9A45C;
+  --void:#00261C;
+  --deep:#002D21;
+  --glass:rgba(211,207,198,.07);
+  --glass2:rgba(211,207,198,.13);
+  --edge:rgba(211,207,198,.16);
+  --edge2:rgba(211,207,198,.3);
+  --cyan:#D7B66F;
+  --ice:#F0EDE6;
+  --txt:#D3CFC6;
+  --dim:#A4B0A8;
+  --blok-rgb:0,74,55;
+  --blok-derin-rgb:0,32,24;
+  --blok:#00382A;
+  --blok-zemin:linear-gradient(180deg,rgba(0,106,78,.82),rgba(0,56,42,.88));
+  --hdr-bg:rgba(0,63,46,.45);
+  --yuzey:rgba(0,106,78,.38);
+  --alt-bant:#002A1F;
+  --alt-yazi:#B8C2BC;
+  --nokta:rgba(211,207,198,.08);
+  --leke1:rgba(0,106,78,.95);
+  --leke2:rgba(201,164,92,.16);
+  --leke3:rgba(0,140,103,.55);
+  --cam-bg:linear-gradient(135deg,rgba(211,207,198,.16),rgba(0,106,78,.10) 55%,rgba(211,207,198,.05));
+  --cam-kenar:rgba(211,207,198,.22);
+  --cam-isik:linear-gradient(135deg,rgba(255,255,255,.42),rgba(255,255,255,.04) 40%,rgba(201,164,92,.35));
+  --cam-golge:0 18px 44px rgba(0,20,15,.45),inset 0 1px 0 rgba(255,255,255,.12);
   color-scheme:dark;
 }
 :root[data-theme='dark'] :is(.koyu,.mdl-box,.sys-box,.tipbox,.hex,.ast,.skip-link,.lb){
@@ -552,25 +562,41 @@ body.lock{overflow:hidden}
   --dim:#9AA59F;
   --edge:rgba(211,207,198,.14);
   --edge2:rgba(211,207,198,.3);
-  --cyan:#A8D4BE;
+  --cyan:#D7B66F;
   --glass:rgba(211,207,198,.06);
   --glass2:rgba(211,207,198,.12);
   --deep:#0B241D;
   --void:#071813;
 }
 
-/* Cam yüzeyler (iki temada da). Kayan arşiv kartları hariç: hareket ederken
-   bulanıklık her karede yeniden hesaplanıp kaydırmayı takıltılı yapıyordu. */
-.panel,.tl-item,.hud,.rgrid .rcard,.shot .frame,.now-item,.lang,.ic{
-  background:var(--cam-bg);
+/* Cam yüzeyler (iki temada da): yarı saydam gövde, arkasını bulanıklaştırma,
+   ışığı kıran degrade kenar ve üstte ince parlama. */
+.panel,.tl-item,.hud,.rgrid .rcard,.shot .frame,.now-grid .now-item,.chip,.btn--plain,.lang,.ic,.tema,.badge{
+  background:var(--cam-bg) padding-box,var(--cam-isik) border-box;
+  border:1px solid transparent;
   backdrop-filter:var(--cam-blur);
-  border-color:var(--cam-kenar);
   box-shadow:var(--cam-golge);
 }
-.now-grid .now-item{border-radius:16px;padding:24px 26px;border:1px solid var(--cam-kenar)}
+.now-grid .now-item{border-radius:16px;padding:24px 26px}
 .now-grid{border-top:0;gap:12px}
-.tl-item{border-left:3px solid var(--navy)}
-.hdr{backdrop-filter:blur(20px) saturate(1.5)}
+.tl-item{border-left-width:1px}
+.tl-item::before{content:'';position:absolute;left:0;top:18px;bottom:18px;width:3px;border-radius:0 3px 3px 0;background:var(--serit)}
+.tl-item{position:relative}
+.chip[data-tip]:hover,.chip[data-tip]:focus-visible,a.chip:hover{background:var(--navy) padding-box,var(--navy) border-box}
+.btn--plain:hover{background:var(--navy) padding-box,var(--navy) border-box}
+/* Kayan arşiv kartları: bulanıklık yok (kaydırmayı takıltılı yapıyordu), ama aynı cam görünüm */
+.hs-track .rcard{background:var(--cam-bg) padding-box,var(--cam-isik) border-box;border:1px solid transparent;box-shadow:var(--cam-golge)}
+.hs-track .rcard:hover{background:var(--cam-bg) padding-box,var(--cam-isik) border-box}
+/* Pencereler de cam: arkadaki sayfa bulanık görünüyor */
+.mdl{background:rgba(var(--blok-derin-rgb),.38);backdrop-filter:blur(6px)}
+.mdl-box,.sys-box{background:var(--blok-zemin);backdrop-filter:blur(28px) saturate(1.5);box-shadow:0 30px 90px rgba(var(--blok-derin-rgb),.5),inset 0 1px 0 rgba(255,255,255,.14)}
+.tipbox{background:rgba(var(--blok-rgb),.82);backdrop-filter:blur(16px)}
+.hdr{background:var(--hdr-bg);backdrop-filter:blur(22px) saturate(1.6);border-bottom-color:var(--cam-kenar)}
+
+/* Camların arkasında yavaşça dolaşan iki ışık. Cam efektini görünür kılan bunlar. */
+body::after{content:'';position:fixed;z-index:0;pointer-events:none;width:46vw;height:46vw;left:-8vw;top:28vh;border-radius:50%;background:radial-gradient(circle,var(--leke1),transparent 68%);opacity:.55;animation:gezinti 38s ease-in-out infinite alternate}
+@keyframes gezinti{0%{transform:translate(0,0)}50%{transform:translate(42vw,-18vh)}100%{transform:translate(70vw,26vh)}}
+@media(prefers-reduced-motion:reduce){body::after{animation:none}}
 html,body{transition:background-color .3s}
 
 /* Tema düğmesi */
